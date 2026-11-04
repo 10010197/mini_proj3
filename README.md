@@ -57,15 +57,24 @@ project3/
 │   ├── crawl_dart.py             #   DART 공시 수집 (OpenAPI)  ✅
 │   ├── crawl_kipris.py           #   KIPRIS Plus 특허 수집 (OpenAPI)  ✅
 │   ├── crawl_reports.py          #   BioIN 산업보고서 크롤링  ✅
-│   ├── crawl_korea_kr.py         #   공공 문서 크롤링
-│   ├── crawl_blog.py             #   블로그 수집
+│   ├── crawl_policy.py           #   정부 보도자료 (정책브리핑 korea.kr)  ✅
+│   ├── dedup_news.py             #   뉴스 3단계 중복 처리  ✅
+│   ├── (crawl_blog.py)           #   블로그 — 수집하지 않음 (근거: docs/kb_composition.md §2.1)
 │   ├── select_kb.py              #   지식베이스 선별 (in_kb)  ✅
 │   └── storage.py                #   원문 저장 (공통 documents 스키마)  ✅
-├── indexer/                      # ② 인덱싱 계층 (parse · dedup · chunk · embed)
+├── indexer/                      # ② 인덱싱 계층
+│   ├── parse.py                  #   문서 종류별 섹션 분할·정제  ✅
+│   ├── dedup.py                  #   청크 단위 중복 처리  ✅
+│   ├── chunk.py                  #   청킹 설정 3종 + 청크 메타데이터  ✅
+│   └── embed.py                  #   임베딩 (text-embedding-3-small) + 캐시  ✅
 ├── store/                        # ③ 저장 계층 (chroma/, docs.db)
 ├── rag/                          # 체인 (retriever · chain · prompts)
 ├── eval/                         # 평가 하네스
+│   ├── eval_set.jsonl            #   평가셋 (사실·비교·시점·종합·답변 불가)  ✅
+│   ├── retrieval_eval.py         #   검색 평가 Hit@k · MRR  ✅
+│   └── kb_coverage.py            #   대표 질문별 근거 커버리지 (부족 자료 탐색)  ✅
 ├── app/                          # ④ 챗봇 UI (조회 전용)
+├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing)
 └── report/
 ```
 
@@ -236,24 +245,28 @@ python -m collector.crawl_reports --boards watch global --max-per-board 20
 | KIPRIS | **KIPRIS Plus API** (plus.kipris.or.kr) | www.kipris.or.kr은 `Disallow: /` → 화면을 크롤링하지 않고 API만 사용 | 0.2초, 순차 | 국내: 공보 DOI `https://doi.org/10.8080/{출원번호}` / 해외: API 요청 URL(키 제외) | `loaded_at` |
 
 | 산업보고서 | BioIN 게시판 HTML 크롤링 | bioin.or.kr은 `/innorix/`, `/InnoAP/`, `/sn3hcv/`, `/sso/`만 금지 → 목록과 본문만 요청, 첨부 PDF는 받지 않음. khidi.or.kr(`/fileDownload` 금지)과 kiet.re.kr(`/common/file/` 금지)은 직접 수집하지 않음 | 1초, 순차 | BioIN 게시물 URL (+ `meta.original_url`) | `loaded_at` |
+| 정부 보도자료 | 정책브리핑(korea.kr) 목록·상세 HTML + 보도자료 본문 첨부(HWPX/PDF) 1개 | korea.kr은 `User-Agent: *` 전체 허용. mohw.go.kr은 게시판 대부분 금지 → 직접 수집하지 않음. 별첨·붙임은 받지 않음 | 1초, 순차 | 정책브리핑 보도자료 URL | `loaded_at` |
 
 - 받아 둔 robots.txt는 `data/compliance/`에 날짜와 함께 보관한다.
-- 병렬 요청은 쓰지 않는다. 로그인이 필요한 데이터와 개인정보 필드(발명자명, 공시 담당자 등)는 수집하지 않는다.
+- 병렬 요청은 쓰지 않는다. 로그인이 필요한 데이터는 수집하지 않는다.
+- 개인정보: 발명자명은 받지 않고, 공시책임자·공시담당자 이름과 보도자료 담당자 표(부서·직위·이름·전화)는 저장 전에 지운다 (`storage.scrub_personal`, `crawl_policy.scrub`). 원본 API 응답·HTML 캐시(`data/`, git 제외)는 재현용으로 로컬에만 둔다.
 - 모든 문서에 `url`과 `loaded_at`(수집 일시)이 채워져 있는지 확인했다(누락 0건).
 
 ## 9. 지식베이스 규모
 
 | 출처 | 원 건수 | 실질 건수 | 예상 청크 (700자 기준) |
 |---|---|---|---|
-| 제공 뉴스 | 65,025행 (3개 파일) | 31,192 → 근사중복 제거 시 약 30,700 | 약 60,600 |
+| 제공 뉴스 | 65,025행 (3개 파일) | 31,192 → 3단계 중복 처리 후 **22,623** | 약 46,000 |
 | DART 공시 | 1,627 | 1,627 (사업보고서는 'II. 사업의 내용'만 남김) | 약 17,800 |
 | KIPRIS 특허 | 8,114 | 8,114 | 약 8,200 |
-| **합계** | | **약 40,400** (1차 자료 24%) | **약 86,600** |
+| BioIN 산업보고서 | 1,330 | 1,330 | 약 6,600 |
+| 정부 보도자료 | 1,022 | 1,022 | 약 5,200 |
+| **합계** | | **약 34,700** (1차 자료 35%) | **약 83,800** |
 
 - 원 건수와 실질 건수의 차이는 대부분 **파일 간 중복**(묶음 파일 = 키워드 파일의 합집합)이다.
-- 같은 사건을 다른 매체가 다시 쓴 근사중복은 MinHash(문자 5-gram, 유사도 0.8 이상) 기준 약 1.5%다.
-  - 클러스터 목록: `data/compliance/news_neardup_clusters.csv`
-  - 이 기준은 재작성 기사를 놓칠 수 있으므로 인덱서 `dedup.py`에서 임계값을 다시 정한다.
+- 같은 보도자료의 재배포본과 같은 사건의 유사 기사는 `collector/dedup_news.py`가 3단계로 처리한다 (31,192 → **22,623**, −27.5%).
+  기준·임계값·처리 전후 건수와 설정 근거는 [docs/kb_composition.md](docs/kb_composition.md) §1.
+  - 판정 결과: `docs.db`의 `news_dedup` 테이블 (`tier`, `rep_id`, `event_id`), 감사용 목록 `data/compliance/news_dedup_decisions.csv`
 
 **지식베이스 선별 — `collector/select_kb.py`** (적용 완료)
 
@@ -261,14 +274,15 @@ python -m collector.crawl_reports --boards watch global --max-per-board 20
 
 | 출처 | 선별 기준 | 지식베이스 | 예상 청크 |
 |---|---|---|---|
-| 뉴스 | 근사중복 대표본 30,710건 중 점수순으로 분기별 층화 (하위 주제 2 + 전망 서술 1 + 키워드 2회 이상 1 + 적정 길이 0.5) | **7,997** (주제 7,374 · 전망 616 · 키워드 7) | 19,162 |
+| 뉴스 | 중복 처리 후 22,623건 → 사건당 최대 3건(21,578) → 점수순으로 분기별 층화 (하위 주제 2 + 전망 서술 1 + 키워드 2회 이상 1 + 적정 길이 0.5) | **8,001** (주제 6,825 · 전망 957 · 키워드 219) | 20,193 |
 | DART | 수시공시 전부 + 사업보고서는 2024·2025 사업연도만 ('II. 사업의 내용' 장만) | **1,516** (수시 1,440 · 사업보고서 76) | 9,894 |
 | 특허 | 해외 전부, DART 시드 기업 출원 전부, 국내는 주제별 할당 (ADC·AI 신약 전부, 의료 AI 600, 비대면 진료 350, 보강·등록·최근 순) | **4,109** | 4,196 |
 | 산업보고서 | 분석 보고서(watch·report·global) 231건 전부 + 산업 동향 브리프는 하위 주제·전망 점수순 500건 | **731** | 3,619 |
-| **합계** | | **14,353 (1차 자료 44%)** | **약 36,900 (1차 자료 48%)** |
+| 정부 보도자료 | 관련성 필터를 통과한 전부 | **1,022** | 5,173 |
+| **합계** | | **15,379 (1차 자료 48%)** | **약 43,100 (1차 자료 53%)** |
 
 - 연도별 뉴스: 2021(10월~) 287 · 2022 1,475 · 2023 1,622 · 2024 1,403 · 2025 1,846 · 2026(~10월) 1,364
-- 크롤러가 문서를 다시 적재하면 `in_kb`가 0으로 돌아가므로, **수집 후에는 항상 `select_kb`를 다시 실행**한다(약 4분, MinHash 계산).
+- 크롤러가 문서를 다시 적재하면 `in_kb`가 0으로 돌아가므로, **수집 후에는 항상 `select_kb`를 다시 실행**한다(1분 이내. 뉴스 중복 판정은 `dedup_news`가 미리 계산).
 - 일정이 밀리면 `--news-target`(기본 8,000)부터 줄인다.
 
 ```bash
@@ -308,8 +322,35 @@ python -m collector.crawl_reports
 ```
 
 ```bash
-# 지식베이스 선별 (수집 후 항상 마지막에)
+# 정부 보도자료 (정책브리핑, 1초 간격 · 첫 실행 약 1시간)
+python -m collector.crawl_policy
+```
+
+```bash
+# 뉴스 중복 처리 → 지식베이스 선별 (수집 후 항상 이 순서로 마지막에)
+python -m collector.dedup_news
+```
+
+```bash
 python -m collector.select_kb
+```
+
+```bash
+# ② 인덱싱: 청킹(설정 3종) → 임베딩 (.env 에 OPENAI_API_KEY 필요, 설정당 약 25분·$0.5)
+python -m indexer chunk
+```
+
+```bash
+python -m indexer embed --configs structure
+```
+
+```bash
+# 평가: 대표 질문 근거 커버리지, 청킹 설정별 Hit@k·MRR
+python -m eval.kb_coverage
+```
+
+```bash
+python -m eval.retrieval_eval
 ```
 
 옵션: `--src <파일|디렉터리>`, `--db store/docs.db`, `--since 2023-01-01`, `--until 2026-06-30`

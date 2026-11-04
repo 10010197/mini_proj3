@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import re
 import sqlite3
 from datetime import datetime
 from pathlib import Path
@@ -66,6 +67,27 @@ CREATE TABLE IF NOT EXISTS rejected_docs (
 """
 
 
+PHONE = re.compile(r"\(?0\d{1,2}\)?[-.)\s]?\d{3,4}[-.\s]\d{4}")
+EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
+STAFF_LINE = re.compile(r"공시\s?(책임자|담당자)|담당자\s?\(|담\s?당\s?자\s?[:|]")
+CONTACT_LINE = re.compile(r"연락처|전화|\(전 화\)|문의|Tel|TEL|☎")
+
+
+def scrub_personal(text: str) -> str:
+    """개인정보 제거 (수집 원칙: 개인정보 미수집).
+    - 공시책임자·공시담당자처럼 개인 이름이 들어가는 줄은 통째로 지운다
+    - 연락처 줄의 전화번호는 [전화번호]로 바꾸고(부서명은 유지), 이메일은 [이메일]로 바꾼다"""
+    out = []
+    for line in (text or "").split("\n"):
+        # 표 한 칸·연락처 한 줄처럼 짧은 줄만 통째로 지운다 (뉴스처럼 본문 전체가 한 줄인 문서를 지우지 않도록)
+        if len(line) <= 200 and STAFF_LINE.search(line):
+            continue
+        if CONTACT_LINE.search(line):
+            line = PHONE.sub("[전화번호]", line)
+        out.append(EMAIL.sub("[이메일]", line))
+    return "\n".join(out)
+
+
 def now_iso() -> str:
     return datetime.now().isoformat(timespec="seconds")
 
@@ -101,6 +123,8 @@ def save_documents(
 ) -> None:
     """documents(및 rejected_docs)에 upsert. replace_origin=True면 해당 origin 문서를 먼저 비운다."""
     docs = docs.reindex(columns=DOCUMENT_COLUMNS)
+    docs["body"] = docs["body"].map(scrub_personal)
+    docs["char_len"] = docs["body"].str.len()
     docs["origin"] = origin
     docs["loaded_at"] = docs["loaded_at"].fillna(now_iso())
     with connect(db_path) as con:

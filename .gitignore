@@ -2,5 +2,8 @@
 store/*.db
 data/
 store/chroma/
+store/chunks/
+store/embeddings/
+store/*.log
 __pycache__/
 .ipynb_checkpoints/

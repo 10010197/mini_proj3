@@ -4,7 +4,8 @@
 6일 안에 임베딩·평가·개선을 반복할 수 있는 규모(문서 약 15,000건 / 청크 약 3만 개)로 맞추면서,
 직접 수집한 1차 자료(공시·특허·보고서)의 비중이 유의미하도록 구성한다. (README §8)
 
-  뉴스(제공)  : 근사중복 클러스터의 대표본(가장 이른 기사)만 → 점수(하위 주제·전망 서술·키워드 밀도) 순으로
+  뉴스(제공)  : collector/dedup_news.py의 3단계 중복 처리 결과(news_dedup.keep=1)만 후보로 →
+                같은 사건(event_id)은 최대 EVENT_CAP건 → 점수(하위 주제·전망 서술·키워드 밀도) 순으로
                 분기별 층화 추출해 NEWS_TARGET건
   DART 공시   : 수시공시 전부 + 사업보고서는 최근 ANNUAL_YEARS 사업연도만
   특허        : 해외 전부 + 국내는 DART 시드 기업 출원 전부 + 주제별 할당량(PATENT_QUOTA, 등록·최근 우선)
@@ -24,10 +25,8 @@ import argparse
 import hashlib
 import json
 import logging
-import random
 import re
 import sys
-from collections import defaultdict
 from pathlib import Path
 
 import pandas as pd
@@ -37,7 +36,7 @@ from collector import storage
 log = logging.getLogger("collector.select_kb")
 
 NEWS_TARGET = 8000
-NEAR_DUP_THRESHOLD = 0.8          # MinHash 시그니처 일치율 (문자 5-gram, 본문 앞 1,500자)
+EVENT_CAP = 3                     # 같은 사건의 관점 상이 기사 중 지식베이스에 넣는 최대 건수
 ANNUAL_YEARS = ("2024.12", "2025.12")
 PATENT_QUOTA = {                  # 국내 특허 주제별 상한 (None = 전부). 부족한 하위 주제는 전부 유지
     "ADC": None,
@@ -49,42 +48,6 @@ REPORT_BRIEF_TARGET = 500         # BioIN '산업 동향'(유관기관 브리프
 CHUNK_CHARS = 700                 # 규모 추정용 청크 길이
 
 
-# --------------------------------------------------------------------------- #
-# 근사중복
-# --------------------------------------------------------------------------- #
-def near_dup_clusters(texts: list[str], threshold: float = NEAR_DUP_THRESHOLD, n_perm: int = 64, bands: int = 16) -> list[int]:
-    """MinHash + LSH로 근사중복 클러스터 번호(대표 인덱스)를 돌려준다."""
-    rows = n_perm // bands
-    rng = random.Random(0)
-    prime = (1 << 61) - 1
-    coeffs = [(rng.randrange(1, prime), rng.randrange(0, prime)) for _ in range(n_perm)]
-
-    def sig(t: str) -> list[int]:
-        t = re.sub(r"[^가-힣A-Za-z0-9]", "", t)[:1500]
-        shingles = {int(hashlib.md5(t[i:i + 5].encode()).hexdigest()[:12], 16) for i in range(0, max(1, len(t) - 4), 2)} or {0}
-        return [min((a * x + b) % prime for x in shingles) for a, b in coeffs]
-
-    sigs = [sig(t) for t in texts]
-    parent = list(range(len(sigs)))
-
-    def find(x: int) -> int:
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-
-    for b in range(bands):
-        buckets: dict[tuple, list[int]] = defaultdict(list)
-        for i, s in enumerate(sigs):
-            buckets[tuple(s[b * rows:(b + 1) * rows])].append(i)
-        for idx in buckets.values():
-            for j in idx[1:]:
-                i = idx[0]
-                if sum(x == y for x, y in zip(sigs[i], sigs[j])) / n_perm >= threshold:
-                    parent[find(j)] = find(i)
-    return [find(i) for i in range(len(sigs))]
-
-
 def _tiebreak(doc_id: str) -> int:
     return int(hashlib.md5(doc_id.encode()).hexdigest()[:8], 16)
 
@@ -92,13 +55,14 @@ def _tiebreak(doc_id: str) -> int:
 # --------------------------------------------------------------------------- #
 # 출처별 선별
 # --------------------------------------------------------------------------- #
-def select_news(df: pd.DataFrame, target: int) -> pd.Series:
-    """반환: doc_id → kb_reason (선별된 것만)."""
-    df = df.copy()
+def select_news(df: pd.DataFrame, target: int, dedup: pd.DataFrame, event_cap: int = EVENT_CAP) -> pd.Series:
+    """반환: doc_id → kb_reason (선별된 것만). dedup = news_dedup 테이블."""
+    df = df.merge(dedup[["doc_id", "keep", "event_id"]], on="doc_id", how="left")
+    if df["keep"].isna().any():
+        raise RuntimeError("news_dedup이 최신이 아닙니다. 먼저 python -m collector.dedup_news 를 실행하세요.")
     df["published_at"] = pd.to_datetime(df["published_at"])
-    df["cluster"] = near_dup_clusters(df["body"].tolist())
-    reps = df.sort_values("published_at").drop_duplicates("cluster")
-    log.info("뉴스 %d건 → 근사중복 대표본 %d건", len(df), len(reps))
+    reps = df[df["keep"] == 1]
+    log.info("뉴스 %d건 → 중복 처리 후 %d건", len(df), len(reps))
 
     reps = reps.assign(
         score=2 * (reps["topics"].fillna("") != "")
@@ -108,6 +72,11 @@ def select_news(df: pd.DataFrame, target: int) -> pd.Series:
         quarter=reps["published_at"].dt.to_period("Q"),
         tb=reps["doc_id"].map(_tiebreak),
     )
+    # 같은 사건은 점수 상위 event_cap건만 (관점이 다른 기사는 남기되 한 사건이 검색을 독점하지 않도록)
+    reps = reps.sort_values(["score", "tb"], ascending=[False, True])
+    ev = reps["event_id"].fillna(reps["doc_id"])
+    reps = reps[reps.groupby(ev).cumcount() < event_cap]
+    log.info("사건당 최대 %d건 → %d건", event_cap, len(reps))
     # 분기별 층화: 분기 기사량 비율대로 할당 후 점수 순
     share = reps["quarter"].value_counts(normalize=True)
     alloc = (share * target).round().astype(int)
@@ -204,7 +173,9 @@ def run(
     parts = []
     by = docs.groupby("source_type")
     if "news" in by.groups:
-        parts.append(select_news(by.get_group("news"), news_target))
+        with storage.connect(db_path) as con:
+            dedup = pd.read_sql("SELECT doc_id, keep, event_id FROM news_dedup", con)
+        parts.append(select_news(by.get_group("news"), news_target, dedup))
     if "disclosure" in by.groups:
         parts.append(select_dart(by.get_group("disclosure"), ANNUAL_YEARS))
     if "patent" in by.groups:

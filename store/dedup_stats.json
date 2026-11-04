@@ -1,0 +1,45 @@
+{
+  "exact": {
+    "raw_rows": 65025,
+    "after_url_merge": 32452,
+    "removed_same_url": 32573,
+    "removed_same_body": 118
+  },
+  "input_docs": 31192,
+  "candidate_pairs_scored": 61421,
+  "republish_pairs": 18097,
+  "same_event_pairs": 7248,
+  "tiers": {
+    "unique": 14692,
+    "republish_dup": 7677,
+    "event_distinct": 4640,
+    "republish_rep": 3106,
+    "event_collapsed": 892,
+    "republish_kept_numbers": 185
+  },
+  "republish_clusters": 3106,
+  "removed_republish": 7677,
+  "kept_republish_with_new_numbers": 185,
+  "removed_event_same_content": 892,
+  "event_groups": 2289,
+  "event_groups_multi_view": 1980,
+  "output_docs": 22623,
+  "thresholds": {
+    "SHINGLE": 5,
+    "SAMPLE_MOD": 4,
+    "BODY_CAP": 3000,
+    "REPUB_JACCARD": 0.5,
+    "REPUB_JACCARD_WITH_CONT": 0.4,
+    "REPUB_CONTAINMENT": 0.8,
+    "REPUB_MAX_DAYS": 3,
+    "REPUB_JACCARD_ANYTIME": 0.8,
+    "EVENT_MAX_DAYS": 1,
+    "EVENT_JACCARD_MIN": 0.15,
+    "EVENT_TITLE_MIN": 0.3,
+    "EVENT_JACCARD_ALONE": 0.3,
+    "EVENT_CONTAINMENT": 0.7,
+    "NEW_NUMBERS_MIN": 2
+  },
+  "elapsed_sec": 54,
+  "generated_at": "2026-11-04T13:24:09"
+}

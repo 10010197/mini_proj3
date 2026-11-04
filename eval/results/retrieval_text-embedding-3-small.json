@@ -1,0 +1,2822 @@
+{
+  "fixed": {
+    "config": "fixed",
+    "model": "text-embedding-3-small",
+    "chunks": 45522,
+    "overall": {
+      "n": 68,
+      "hit@1": 0.368,
+      "hit@3": 0.529,
+      "hit@5": 0.632,
+      "hit@10": 0.691,
+      "mrr": 0.473,
+      "hit@3_strict": 0.5
+    },
+    "by_type": {
+      "comparison": {
+        "n": 9,
+        "hit@1": 0.222,
+        "hit@3": 0.667,
+        "hit@5": 0.778,
+        "hit@10": 0.778,
+        "mrr": 0.43,
+        "hit@3_strict": 0.556
+      },
+      "fact": {
+        "n": 36,
+        "hit@1": 0.528,
+        "hit@3": 0.639,
+        "hit@5": 0.778,
+        "hit@10": 0.833,
+        "mrr": 0.622,
+        "hit@3_strict": 0.611
+      },
+      "synthesis": {
+        "n": 9,
+        "hit@1": 0.0,
+        "hit@3": 0.111,
+        "hit@5": 0.222,
+        "hit@10": 0.222,
+        "mrr": 0.072,
+        "hit@3_strict": 0.111
+      },
+      "temporal": {
+        "n": 14,
+        "hit@1": 0.286,
+        "hit@3": 0.429,
+        "hit@5": 0.429,
+        "hit@10": 0.571,
+        "mrr": 0.374,
+        "hit@3_strict": 0.429
+      }
+    },
+    "answerable_top1_score_median": 0.6315,
+    "unanswerable_top1_score_median": 0.588,
+    "items": [
+      {
+        "id": "F01",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 2,
+        "top1_score": 0.6479832530021667,
+        "missing_gold": [],
+        "top3": [
+          "dart:20230217800631",
+          "dart:20230203800856",
+          "bioin:industry:321694"
+        ]
+      },
+      {
+        "id": "F02",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6232757568359375,
+        "missing_gold": [],
+        "top3": [
+          "dart:20230131800252",
+          "dart:20250328800003",
+          "dart:20250214800378"
+        ]
+      },
+      {
+        "id": "F03",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.6362898945808411,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260312000744",
+          "dart:20250313001013",
+          "dart:20230907900157"
+        ]
+      },
+      {
+        "id": "F04",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.6684163212776184,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250321001484",
+          "dart:20231226900002",
+          "dart:20260323001538"
+        ]
+      },
+      {
+        "id": "F05",
+        "type": "fact",
+        "rank": 5,
+        "rank_strict": 6,
+        "top1_score": 0.6759551763534546,
+        "missing_gold": [],
+        "top3": [
+          "dart:20211117900002",
+          "dart:20211227900089",
+          "dart:20260323001538"
+        ]
+      },
+      {
+        "id": "F06",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.6570550799369812,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250321001484",
+          "dart:20260323001538",
+          "dart:20211227900089"
+        ]
+      },
+      {
+        "id": "F07",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6304904222488403,
+        "missing_gold": [],
+        "top3": [
+          "dart:20241010900213",
+          "dart:20241118900152",
+          "dart:20250314900117"
+        ]
+      },
+      {
+        "id": "F08",
+        "type": "fact",
+        "rank": 19,
+        "rank_strict": 19,
+        "top1_score": 0.6585744619369507,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260831900176",
+          "dart:20251127900375",
+          "dart:20260120900306"
+        ]
+      },
+      {
+        "id": "F09",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.7029887437820435,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260831900176",
+          "dart:20251001900011",
+          "dart:20251127900375"
+        ]
+      },
+      {
+        "id": "F10",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6393452286720276,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260922800103",
+          "dart:20230824800403",
+          "dart:20240314802609"
+        ]
+      },
+      {
+        "id": "F11",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": null,
+        "top1_score": 0.6725186109542847,
+        "missing_gold": [],
+        "top3": [
+          "naver:421:0006690373",
+          "naver:031:0000734951",
+          "naver:296:0000064135"
+        ]
+      },
+      {
+        "id": "F12",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.661733865737915,
+        "missing_gold": [],
+        "top3": [
+          "naver:666:0000021574",
+          "naver:666:0000015336",
+          "naver:296:0000067302"
+        ]
+      },
+      {
+        "id": "F13",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6493794918060303,
+        "missing_gold": [],
+        "top3": [
+          "naver:008:0005144781",
+          "naver:016:0001905229",
+          "naver:011:0004267506"
+        ]
+      },
+      {
+        "id": "F14",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.5196533203125,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260602000343",
+          "dart:20250318900131",
+          "naver:421:0008762841"
+        ]
+      },
+      {
+        "id": "F15",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.5083116292953491,
+        "missing_gold": [],
+        "top3": [
+          "dart:20261013900671",
+          "naver:092:0002405533",
+          "naver:018:0006254356"
+        ]
+      },
+      {
+        "id": "F16",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 3,
+        "top1_score": 0.6159682273864746,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250318000815",
+          "dart:20241108900325",
+          "dart:20240214900206"
+        ]
+      },
+      {
+        "id": "F17",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5788298845291138,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156715045",
+          "korea_kr:156646097",
+          "naver:081:0003433199"
+        ]
+      },
+      {
+        "id": "F18",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6211932301521301,
+        "missing_gold": [],
+        "top3": [
+          "naver:024:0000079424",
+          "naver:366:0000899738",
+          "naver:025:0003269488"
+        ]
+      },
+      {
+        "id": "F19",
+        "type": "fact",
+        "rank": 7,
+        "rank_strict": 7,
+        "top1_score": 0.6111049652099609,
+        "missing_gold": [],
+        "top3": [
+          "naver:119:0003040534",
+          "naver:119:0002908021",
+          "naver:011:0004365915"
+        ]
+      },
+      {
+        "id": "F20",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.6934993267059326,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:329129",
+          "naver:030:0003295936",
+          "bioin:industry:332763"
+        ]
+      },
+      {
+        "id": "F21",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.5949981212615967,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:321252",
+          "naver:023:0003882639",
+          "dart:20250313001013"
+        ]
+      },
+      {
+        "id": "F22",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.7007774710655212,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:321298",
+          "naver:009:0005264537",
+          "bioin:industry:326569"
+        ]
+      },
+      {
+        "id": "F23",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.7361446619033813,
+        "missing_gold": [],
+        "top3": [
+          "bioin:watch:317921",
+          "naver:366:0001025119",
+          "bioin:watch:331356"
+        ]
+      },
+      {
+        "id": "F24",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6348910331726074,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:320021",
+          "bioin:industry:321694",
+          "bioin:watch:323016"
+        ]
+      },
+      {
+        "id": "F25",
+        "type": "fact",
+        "rank": 6,
+        "rank_strict": 6,
+        "top1_score": 0.5869563817977905,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250321000557",
+          "naver:366:0000933819",
+          "dart:20260323001596"
+        ]
+      },
+      {
+        "id": "F26",
+        "type": "fact",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.5819923877716064,
+        "missing_gold": [],
+        "top3": [
+          "kipris:KR:1020267012594",
+          "kipris:KR:1020237040489",
+          "kipris:KR:1020247036601"
+        ]
+      },
+      {
+        "id": "F27",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5150869488716125,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156715141",
+          "korea_kr:156556897",
+          "korea_kr:156590250"
+        ]
+      },
+      {
+        "id": "F28",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 2,
+        "top1_score": 0.6399778127670288,
+        "missing_gold": [],
+        "top3": [
+          "dart:20230731800278",
+          "dart:20240321801554",
+          "dart:20260630801610"
+        ]
+      },
+      {
+        "id": "C01",
+        "type": "comparison",
+        "rank": 2,
+        "rank_strict": 5,
+        "top1_score": 0.6048206686973572,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260312000744",
+          "dart:20230217800631",
+          "dart:20260930900659"
+        ]
+      },
+      {
+        "id": "C02",
+        "type": "comparison",
+        "rank": 5,
+        "rank_strict": 5,
+        "top1_score": 0.5453062057495117,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250321001484",
+          "dart:20220419900093",
+          "dart:20231226900002"
+        ]
+      },
+      {
+        "id": "C03",
+        "type": "comparison",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.6294126510620117,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260831900176",
+          "dart:20240222900249",
+          "dart:20260323001596"
+        ]
+      },
+      {
+        "id": "C04",
+        "type": "comparison",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.5737663507461548,
+        "missing_gold": [],
+        "top3": [
+          "dart:20251204800370",
+          "dart:20260617800458",
+          "dart:20240702800160"
+        ]
+      },
+      {
+        "id": "C05",
+        "type": "comparison",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6894346475601196,
+        "missing_gold": [],
+        "top3": [
+          "naver:138:0002159072",
+          "naver:005:0001518964",
+          "naver:030:0003087954"
+        ]
+      },
+      {
+        "id": "C06",
+        "type": "comparison",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6704286336898804,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:321694",
+          "bioin:watch:323016",
+          "bioin:industry:324101"
+        ]
+      },
+      {
+        "id": "C07",
+        "type": "comparison",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.4013935327529907,
+        "missing_gold": [],
+        "top3": [
+          "naver:030:0003062795",
+          "kipris:KR:1020250045350",
+          "naver:018:0005161369"
+        ]
+      },
+      {
+        "id": "C08",
+        "type": "comparison",
+        "rank": 1,
+        "rank_strict": 2,
+        "top1_score": 0.5532143115997314,
+        "missing_gold": [],
+        "top3": [
+          "dart:20230217800631",
+          "dart:20230203800856",
+          "dart:20211227900089"
+        ]
+      },
+      {
+        "id": "C09",
+        "type": "comparison",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.6069109439849854,
+        "missing_gold": [],
+        "top3": [
+          "naver:119:0003040534",
+          "naver:366:0001016839",
+          "naver:366:0001035846"
+        ]
+      },
+      {
+        "id": "T01",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6592627763748169,
+        "missing_gold": [],
+        "top3": [
+          "naver:018:0005653104",
+          "naver:366:0001026471",
+          "naver:123:0002337097"
+        ]
+      },
+      {
+        "id": "T02",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6569291353225708,
+        "missing_gold": [],
+        "top3": [
+          "naver:296:0000064135",
+          "naver:092:0002285814",
+          "naver:011:0004267506"
+        ]
+      },
+      {
+        "id": "T03",
+        "type": "temporal",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.6449821591377258,
+        "missing_gold": [],
+        "top3": [
+          "naver:417:0000977934",
+          "dart:20260121800501",
+          "dart:20261021800395"
+        ]
+      },
+      {
+        "id": "T04",
+        "type": "temporal",
+        "rank": 16,
+        "rank_strict": 16,
+        "top1_score": 0.6444363594055176,
+        "missing_gold": [],
+        "top3": [
+          "naver:031:0000734951",
+          "naver:421:0006690373",
+          "naver:296:0000064135"
+        ]
+      },
+      {
+        "id": "T05",
+        "type": "temporal",
+        "rank": 6,
+        "rank_strict": 6,
+        "top1_score": 0.5461506843566895,
+        "missing_gold": [],
+        "top3": [
+          "dart:20251127900375",
+          "dart:20250321000557",
+          "dart:20260323001596"
+        ]
+      },
+      {
+        "id": "T06",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5883642435073853,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156732748",
+          "naver:366:0001071153",
+          "naver:008:0004930251"
+        ]
+      },
+      {
+        "id": "T07",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6170368194580078,
+        "missing_gold": [],
+        "top3": [
+          "naver:008:0005001221",
+          "naver:023:0003749332",
+          "naver:092:0002254442"
+        ]
+      },
+      {
+        "id": "T08",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6181957721710205,
+        "missing_gold": [],
+        "top3": [
+          "naver:277:0005688832",
+          "korea_kr:156621053",
+          "korea_kr:156732748"
+        ]
+      },
+      {
+        "id": "T09",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.5753405094146729,
+        "missing_gold": [],
+        "top3": [
+          "dart:20241118900152",
+          "dart:20260709900108",
+          "dart:20250314900117"
+        ]
+      },
+      {
+        "id": "T10",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5818665623664856,
+        "missing_gold": [],
+        "top3": [
+          "bioin:report:332926",
+          "naver:011:0004365915",
+          "bioin:report:327600"
+        ]
+      },
+      {
+        "id": "S01",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6325179934501648,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004365915",
+          "naver:119:0003040534",
+          "naver:366:0001111588"
+        ]
+      },
+      {
+        "id": "S02",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6780658960342407,
+        "missing_gold": [],
+        "top3": [
+          "naver:005:0001518964",
+          "bioin:industry:329129",
+          "naver:417:0000804679"
+        ]
+      },
+      {
+        "id": "S03",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.4583089351654053,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:331363",
+          "naver:018:0005498472",
+          "naver:018:0006088246"
+        ]
+      },
+      {
+        "id": "S04",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5587575435638428,
+        "missing_gold": [],
+        "top3": [
+          "naver:014:0005561758",
+          "naver:417:0000806764",
+          "naver:008:0004930251"
+        ]
+      },
+      {
+        "id": "S05",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6078907251358032,
+        "missing_gold": [],
+        "top3": [
+          "naver:014:0005430961",
+          "bioin:industry:326167",
+          "naver:243:0000071144"
+        ]
+      },
+      {
+        "id": "S06",
+        "type": "synthesis",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.5294176340103149,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260323001596",
+          "dart:20250321000557",
+          "naver:366:0000949572"
+        ]
+      },
+      {
+        "id": "S07",
+        "type": "synthesis",
+        "rank": 16,
+        "rank_strict": 16,
+        "top1_score": 0.6256319284439087,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:324345",
+          "naver:243:0000018662",
+          "naver:346:0000092796"
+        ]
+      },
+      {
+        "id": "F29",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6894476413726807,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156572068",
+          "korea_kr:156573906",
+          "korea_kr:156590250"
+        ]
+      },
+      {
+        "id": "F30",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6465432643890381,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156556897",
+          "korea_kr:156715141",
+          "korea_kr:156590250"
+        ]
+      },
+      {
+        "id": "F31",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6955573558807373,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156663234",
+          "korea_kr:156785554",
+          "naver:277:0005339820"
+        ]
+      },
+      {
+        "id": "F32",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6836198568344116,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156671971",
+          "korea_kr:156507111",
+          "naver:030:0003277288"
+        ]
+      },
+      {
+        "id": "F33",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6152415871620178,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156752395",
+          "bioin:report:335681",
+          "naver:648:0000008822"
+        ]
+      },
+      {
+        "id": "F34",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6610888838768005,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156666970",
+          "naver:648:0000008822",
+          "naver:417:0000909949"
+        ]
+      },
+      {
+        "id": "F35",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6733067035675049,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156533554",
+          "korea_kr:156522451",
+          "naver:009:0005111534"
+        ]
+      },
+      {
+        "id": "F36",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6845923662185669,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156751284",
+          "korea_kr:156770742",
+          "dart:20250814004283"
+        ]
+      },
+      {
+        "id": "T11",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6257508993148804,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156606716",
+          "korea_kr:156643638",
+          "naver:009:0005692230"
+        ]
+      },
+      {
+        "id": "T12",
+        "type": "temporal",
+        "rank": 6,
+        "rank_strict": 6,
+        "top1_score": 0.5868964195251465,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156573906",
+          "naver:008:0004930251",
+          "korea_kr:156605993"
+        ]
+      },
+      {
+        "id": "T13",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6510975956916809,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156785554",
+          "korea_kr:156715141",
+          "naver:277:0005339820"
+        ]
+      },
+      {
+        "id": "T14",
+        "type": "temporal",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.6460490226745605,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156715141",
+          "korea_kr:156590250",
+          "korea_kr:156621053"
+        ]
+      },
+      {
+        "id": "S08",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.48238155245780945,
+        "missing_gold": [],
+        "top3": [
+          "kipris:KR:1020230131432",
+          "korea_kr:156785554",
+          "kipris:KR:1020250029652"
+        ]
+      },
+      {
+        "id": "S09",
+        "type": "synthesis",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.7219522595405579,
+        "missing_gold": [],
+        "top3": [
+          "naver:009:0005692230",
+          "bioin:report:335681",
+          "naver:021:0002794732"
+        ]
+      }
+    ]
+  },
+  "structure": {
+    "config": "structure",
+    "model": "text-embedding-3-small",
+    "chunks": 54224,
+    "overall": {
+      "n": 68,
+      "hit@1": 0.368,
+      "hit@3": 0.603,
+      "hit@5": 0.647,
+      "hit@10": 0.735,
+      "mrr": 0.495,
+      "hit@3_strict": 0.544
+    },
+    "by_type": {
+      "comparison": {
+        "n": 9,
+        "hit@1": 0.222,
+        "hit@3": 0.667,
+        "hit@5": 0.667,
+        "hit@10": 0.667,
+        "mrr": 0.435,
+        "hit@3_strict": 0.444
+      },
+      "fact": {
+        "n": 36,
+        "hit@1": 0.5,
+        "hit@3": 0.722,
+        "hit@5": 0.806,
+        "hit@10": 0.889,
+        "mrr": 0.631,
+        "hit@3_strict": 0.667
+      },
+      "synthesis": {
+        "n": 9,
+        "hit@1": 0.0,
+        "hit@3": 0.111,
+        "hit@5": 0.111,
+        "hit@10": 0.333,
+        "mrr": 0.095,
+        "hit@3_strict": 0.111
+      },
+      "temporal": {
+        "n": 14,
+        "hit@1": 0.357,
+        "hit@3": 0.571,
+        "hit@5": 0.571,
+        "hit@10": 0.643,
+        "mrr": 0.441,
+        "hit@3_strict": 0.571
+      }
+    },
+    "answerable_top1_score_median": 0.6383,
+    "unanswerable_top1_score_median": 0.579,
+    "items": [
+      {
+        "id": "F01",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 2,
+        "top1_score": 0.6385408639907837,
+        "missing_gold": [],
+        "top3": [
+          "dart:20230217800631",
+          "dart:20230203800856",
+          "dart:20250325000403"
+        ]
+      },
+      {
+        "id": "F02",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6280558705329895,
+        "missing_gold": [],
+        "top3": [
+          "dart:20230131800252",
+          "dart:20250328800003",
+          "dart:20250214800378"
+        ]
+      },
+      {
+        "id": "F03",
+        "type": "fact",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.617949366569519,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250313001013",
+          "dart:20260312000744",
+          "dart:20241023900101"
+        ]
+      },
+      {
+        "id": "F04",
+        "type": "fact",
+        "rank": 8,
+        "rank_strict": 8,
+        "top1_score": 0.6584117412567139,
+        "missing_gold": [],
+        "top3": [
+          "dart:20231226900002",
+          "dart:20241010900213",
+          "dart:20250321001484"
+        ]
+      },
+      {
+        "id": "F05",
+        "type": "fact",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.644468367099762,
+        "missing_gold": [],
+        "top3": [
+          "dart:20211117900002",
+          "dart:20211227900089",
+          "dart:20221223900003"
+        ]
+      },
+      {
+        "id": "F06",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.637975811958313,
+        "missing_gold": [],
+        "top3": [
+          "dart:20211227900089",
+          "dart:20250321001484",
+          "dart:20260323001538"
+        ]
+      },
+      {
+        "id": "F07",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6544545888900757,
+        "missing_gold": [],
+        "top3": [
+          "dart:20241010900213",
+          "dart:20241118900152",
+          "dart:20211227900089"
+        ]
+      },
+      {
+        "id": "F08",
+        "type": "fact",
+        "rank": 16,
+        "rank_strict": 16,
+        "top1_score": 0.6634223461151123,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260831900176",
+          "dart:20251127900375",
+          "dart:20260120900306"
+        ]
+      },
+      {
+        "id": "F09",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.6909523010253906,
+        "missing_gold": [],
+        "top3": [
+          "dart:20251127900375",
+          "dart:20260831900176",
+          "dart:20251001900011"
+        ]
+      },
+      {
+        "id": "F10",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6471652388572693,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260922800103",
+          "dart:20240314802609",
+          "dart:20230824800403"
+        ]
+      },
+      {
+        "id": "F11",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": null,
+        "top1_score": 0.675159215927124,
+        "missing_gold": [],
+        "top3": [
+          "naver:031:0000734951",
+          "naver:020:0003488147",
+          "naver:011:0004465341"
+        ]
+      },
+      {
+        "id": "F12",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6778135299682617,
+        "missing_gold": [],
+        "top3": [
+          "naver:366:0000914270",
+          "naver:366:0000913955",
+          "naver:666:0000015336"
+        ]
+      },
+      {
+        "id": "F13",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6656296253204346,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004267506",
+          "naver:008:0005144781",
+          "naver:277:0005369097"
+        ]
+      },
+      {
+        "id": "F14",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.5114158391952515,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260602000343",
+          "dart:20250318900131",
+          "dart:20250814002070"
+        ]
+      },
+      {
+        "id": "F15",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.48760154843330383,
+        "missing_gold": [],
+        "top3": [
+          "naver:092:0002405533",
+          "dart:20261013900671",
+          "korea_kr:156758324"
+        ]
+      },
+      {
+        "id": "F16",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 3,
+        "top1_score": 0.6161683797836304,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250318000815",
+          "dart:20241108900325",
+          "dart:20240214900206"
+        ]
+      },
+      {
+        "id": "F17",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5587314963340759,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156657155",
+          "naver:468:0001034049",
+          "korea_kr:156519617"
+        ]
+      },
+      {
+        "id": "F18",
+        "type": "fact",
+        "rank": 6,
+        "rank_strict": 6,
+        "top1_score": 0.6208024024963379,
+        "missing_gold": [],
+        "top3": [
+          "naver:024:0000079424",
+          "naver:024:0000084237",
+          "naver:366:0000899738"
+        ]
+      },
+      {
+        "id": "F19",
+        "type": "fact",
+        "rank": 9,
+        "rank_strict": 9,
+        "top1_score": 0.6206285953521729,
+        "missing_gold": [],
+        "top3": [
+          "naver:005:0001747829",
+          "naver:119:0003040534",
+          "bioin:industry:324728"
+        ]
+      },
+      {
+        "id": "F20",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.7649818062782288,
+        "missing_gold": [],
+        "top3": [
+          "naver:030:0003295936",
+          "bioin:industry:329129",
+          "naver:030:0003120968"
+        ]
+      },
+      {
+        "id": "F21",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6000075340270996,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:321252",
+          "naver:005:0001752296",
+          "bioin:industry:324101"
+        ]
+      },
+      {
+        "id": "F22",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.707512378692627,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:321298",
+          "naver:005:0001617528",
+          "bioin:industry:320387"
+        ]
+      },
+      {
+        "id": "F23",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.76641845703125,
+        "missing_gold": [],
+        "top3": [
+          "bioin:watch:317921",
+          "naver:029:0002944021",
+          "naver:366:0001025119"
+        ]
+      },
+      {
+        "id": "F24",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.601492702960968,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:320021",
+          "bioin:industry:321694",
+          "bioin:watch:323016"
+        ]
+      },
+      {
+        "id": "F25",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.5807540416717529,
+        "missing_gold": [],
+        "top3": [
+          "naver:366:0000933819",
+          "kipris:KR:1020250139407",
+          "naver:018:0005562500"
+        ]
+      },
+      {
+        "id": "F26",
+        "type": "fact",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.5777368545532227,
+        "missing_gold": [],
+        "top3": [
+          "kipris:KR:1020267012594",
+          "kipris:KR:1020237040489",
+          "kipris:KR:1020247036601"
+        ]
+      },
+      {
+        "id": "F27",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": null,
+        "top1_score": 0.502983033657074,
+        "missing_gold": [],
+        "top3": [
+          "naver:014:0005409492",
+          "naver:003:0012099241",
+          "korea_kr:156715141"
+        ]
+      },
+      {
+        "id": "F28",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 2,
+        "top1_score": 0.6168889999389648,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260630801610",
+          "dart:20240321801554",
+          "dart:20230731800278"
+        ]
+      },
+      {
+        "id": "C01",
+        "type": "comparison",
+        "rank": 1,
+        "rank_strict": 4,
+        "top1_score": 0.5815650224685669,
+        "missing_gold": [],
+        "top3": [
+          "dart:20230217800631",
+          "dart:20260930900659",
+          "dart:20260312000744"
+        ]
+      },
+      {
+        "id": "C02",
+        "type": "comparison",
+        "rank": 12,
+        "rank_strict": 12,
+        "top1_score": 0.5368627309799194,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260224900691",
+          "dart:20231226900002",
+          "dart:20250321001484"
+        ]
+      },
+      {
+        "id": "C03",
+        "type": "comparison",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.6258332133293152,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260831900176",
+          "dart:20251127900375",
+          "dart:20240222900249"
+        ]
+      },
+      {
+        "id": "C04",
+        "type": "comparison",
+        "rank": 2,
+        "rank_strict": 3,
+        "top1_score": 0.569148063659668,
+        "missing_gold": [],
+        "top3": [
+          "dart:20251204800370",
+          "dart:20241218800342",
+          "dart:20240702800160"
+        ]
+      },
+      {
+        "id": "C05",
+        "type": "comparison",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6853756904602051,
+        "missing_gold": [],
+        "top3": [
+          "naver:417:0000846902",
+          "naver:119:0002778142",
+          "naver:011:0004259020"
+        ]
+      },
+      {
+        "id": "C06",
+        "type": "comparison",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.7230377793312073,
+        "missing_gold": [],
+        "top3": [
+          "bioin:watch:323016",
+          "bioin:industry:321694",
+          "naver:018:0005498472"
+        ]
+      },
+      {
+        "id": "C07",
+        "type": "comparison",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.4024810194969177,
+        "missing_gold": [],
+        "top3": [
+          "naver:215:0001068423",
+          "dart:20250320000289",
+          "dart:20260318000614"
+        ]
+      },
+      {
+        "id": "C08",
+        "type": "comparison",
+        "rank": 2,
+        "rank_strict": 7,
+        "top1_score": 0.5250853300094604,
+        "missing_gold": [],
+        "top3": [
+          "naver:023:0003743999",
+          "dart:20230217800631",
+          "dart:20250325000403"
+        ]
+      },
+      {
+        "id": "C09",
+        "type": "comparison",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6404017806053162,
+        "missing_gold": [],
+        "top3": [
+          "naver:366:0001035846",
+          "naver:014:0005403012",
+          "naver:011:0004365915"
+        ]
+      },
+      {
+        "id": "T01",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6689060926437378,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004267506",
+          "naver:366:0001026471",
+          "naver:018:0005653104"
+        ]
+      },
+      {
+        "id": "T02",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6724502444267273,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250814004283",
+          "naver:011:0004267506",
+          "naver:277:0005369097"
+        ]
+      },
+      {
+        "id": "T03",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.665976345539093,
+        "missing_gold": [],
+        "top3": [
+          "dart:20261021800395",
+          "dart:20260515001658",
+          "naver:366:0000919784"
+        ]
+      },
+      {
+        "id": "T04",
+        "type": "temporal",
+        "rank": 18,
+        "rank_strict": 18,
+        "top1_score": 0.6428114175796509,
+        "missing_gold": [],
+        "top3": [
+          "naver:031:0000734951",
+          "naver:022:0003793439",
+          "naver:020:0003488147"
+        ]
+      },
+      {
+        "id": "T05",
+        "type": "temporal",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.5370551943778992,
+        "missing_gold": [],
+        "top3": [
+          "dart:20251127900375",
+          "dart:20260902900182",
+          "dart:20240730900136"
+        ]
+      },
+      {
+        "id": "T06",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6019067764282227,
+        "missing_gold": [],
+        "top3": [
+          "naver:009:0005058513",
+          "korea_kr:156732748",
+          "naver:008:0004930251"
+        ]
+      },
+      {
+        "id": "T07",
+        "type": "temporal",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.6102092266082764,
+        "missing_gold": [],
+        "top3": [
+          "naver:023:0003749332",
+          "naver:092:0002254442",
+          "naver:008:0005001221"
+        ]
+      },
+      {
+        "id": "T08",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6196680068969727,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156732748",
+          "korea_kr:156621053",
+          "korea_kr:156623672"
+        ]
+      },
+      {
+        "id": "T09",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.5753405094146729,
+        "missing_gold": [],
+        "top3": [
+          "dart:20241118900152",
+          "dart:20260709900108",
+          "dart:20250314900117"
+        ]
+      },
+      {
+        "id": "T10",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6523115634918213,
+        "missing_gold": [],
+        "top3": [
+          "bioin:report:332926",
+          "bioin:industry:324728",
+          "naver:005:0001747829"
+        ]
+      },
+      {
+        "id": "S01",
+        "type": "synthesis",
+        "rank": 12,
+        "rank_strict": 12,
+        "top1_score": 0.6270325183868408,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004365915",
+          "naver:014:0005403012",
+          "naver:119:0003040534"
+        ]
+      },
+      {
+        "id": "S02",
+        "type": "synthesis",
+        "rank": 13,
+        "rank_strict": 13,
+        "top1_score": 0.6840628981590271,
+        "missing_gold": [],
+        "top3": [
+          "naver:417:0000846902",
+          "bioin:industry:329129",
+          "naver:025:0003157166"
+        ]
+      },
+      {
+        "id": "S03",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.462472528219223,
+        "missing_gold": [],
+        "top3": [
+          "bioin:watch:323016",
+          "bioin:industry:323708",
+          "naver:018:0005498472"
+        ]
+      },
+      {
+        "id": "S04",
+        "type": "synthesis",
+        "rank": 8,
+        "rank_strict": 8,
+        "top1_score": 0.5511981248855591,
+        "missing_gold": [],
+        "top3": [
+          "naver:014:0005561758",
+          "naver:417:0000806764",
+          "korea_kr:156732748"
+        ]
+      },
+      {
+        "id": "S05",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6165024042129517,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:326167",
+          "naver:014:0005430961",
+          "naver:011:0004144357"
+        ]
+      },
+      {
+        "id": "S06",
+        "type": "synthesis",
+        "rank": 7,
+        "rank_strict": 7,
+        "top1_score": 0.5521470308303833,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260323001596",
+          "dart:20250321000557",
+          "dart:20260805900010"
+        ]
+      },
+      {
+        "id": "S07",
+        "type": "synthesis",
+        "rank": 11,
+        "rank_strict": 11,
+        "top1_score": 0.6127043962478638,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:326569",
+          "naver:005:0001617528",
+          "naver:011:0004434456"
+        ]
+      },
+      {
+        "id": "F29",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.714309573173523,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156572068",
+          "korea_kr:156573906",
+          "naver:277:0005331461"
+        ]
+      },
+      {
+        "id": "F30",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6565583944320679,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156556897",
+          "korea_kr:156715141",
+          "korea_kr:156590250"
+        ]
+      },
+      {
+        "id": "F31",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6739621162414551,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156663234",
+          "korea_kr:156785554",
+          "korea_kr:156476022"
+        ]
+      },
+      {
+        "id": "F32",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6689140796661377,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156671971",
+          "korea_kr:156752395",
+          "korea_kr:156507111"
+        ]
+      },
+      {
+        "id": "F33",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6668578386306763,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156752395",
+          "naver:024:0000074939",
+          "naver:003:0013791014"
+        ]
+      },
+      {
+        "id": "F34",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6730614900588989,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156666970",
+          "naver:648:0000008822",
+          "bioin:industry:333874"
+        ]
+      },
+      {
+        "id": "F35",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.657095193862915,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156741238",
+          "korea_kr:156741241",
+          "naver:009:0005111534"
+        ]
+      },
+      {
+        "id": "F36",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6989459991455078,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156751284",
+          "korea_kr:156770742",
+          "naver:008:0005290806"
+        ]
+      },
+      {
+        "id": "T11",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6460718512535095,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156606716",
+          "korea_kr:156643638",
+          "korea_kr:156664256"
+        ]
+      },
+      {
+        "id": "T12",
+        "type": "temporal",
+        "rank": 8,
+        "rank_strict": 8,
+        "top1_score": 0.5776005983352661,
+        "missing_gold": [],
+        "top3": [
+          "naver:008:0004930251",
+          "korea_kr:156605993",
+          "korea_kr:156606221"
+        ]
+      },
+      {
+        "id": "T13",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6801034212112427,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156785554",
+          "korea_kr:156663234",
+          "korea_kr:156715141"
+        ]
+      },
+      {
+        "id": "T14",
+        "type": "temporal",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.674486517906189,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156715141",
+          "korea_kr:156590250",
+          "korea_kr:156621053"
+        ]
+      },
+      {
+        "id": "S08",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5019205808639526,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156785554",
+          "kipris:KR:1020230131432",
+          "korea_kr:156581869"
+        ]
+      },
+      {
+        "id": "S09",
+        "type": "synthesis",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.7460734844207764,
+        "missing_gold": [],
+        "top3": [
+          "naver:009:0005692230",
+          "naver:021:0002794732",
+          "korea_kr:156643638"
+        ]
+      }
+    ]
+  },
+  "structure_notitle": {
+    "config": "structure_notitle",
+    "model": "text-embedding-3-small",
+    "chunks": 54224,
+    "overall": {
+      "n": 68,
+      "hit@1": 0.235,
+      "hit@3": 0.382,
+      "hit@5": 0.485,
+      "hit@10": 0.618,
+      "mrr": 0.344,
+      "hit@3_strict": 0.368
+    },
+    "by_type": {
+      "comparison": {
+        "n": 9,
+        "hit@1": 0.111,
+        "hit@3": 0.222,
+        "hit@5": 0.333,
+        "hit@10": 0.333,
+        "mrr": 0.218,
+        "hit@3_strict": 0.222
+      },
+      "fact": {
+        "n": 36,
+        "hit@1": 0.306,
+        "hit@3": 0.5,
+        "hit@5": 0.611,
+        "hit@10": 0.722,
+        "mrr": 0.429,
+        "hit@3_strict": 0.472
+      },
+      "synthesis": {
+        "n": 9,
+        "hit@1": 0.111,
+        "hit@3": 0.222,
+        "hit@5": 0.333,
+        "hit@10": 0.667,
+        "mrr": 0.229,
+        "hit@3_strict": 0.222
+      },
+      "temporal": {
+        "n": 14,
+        "hit@1": 0.214,
+        "hit@3": 0.286,
+        "hit@5": 0.357,
+        "hit@10": 0.5,
+        "mrr": 0.281,
+        "hit@3_strict": 0.286
+      }
+    },
+    "answerable_top1_score_median": 0.6156,
+    "unanswerable_top1_score_median": 0.5721,
+    "items": [
+      {
+        "id": "F01",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.570032000541687,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:323708",
+          "dart:20260323001538",
+          "bioin:watch:323016"
+        ]
+      },
+      {
+        "id": "F02",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.5738657712936401,
+        "missing_gold": [],
+        "top3": [
+          "dart:20230131800252",
+          "naver:421:0007336249",
+          "naver:648:0000023133"
+        ]
+      },
+      {
+        "id": "F03",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5891069173812866,
+        "missing_gold": [],
+        "top3": [
+          "naver:422:0000816597",
+          "naver:366:0001120549",
+          "naver:366:0001081649"
+        ]
+      },
+      {
+        "id": "F04",
+        "type": "fact",
+        "rank": 7,
+        "rank_strict": 7,
+        "top1_score": 0.600875973701477,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260312000744",
+          "dart:20250313001013",
+          "dart:20260323001538"
+        ]
+      },
+      {
+        "id": "F05",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6162700653076172,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260312000744",
+          "dart:20250313001013",
+          "dart:20250321001484"
+        ]
+      },
+      {
+        "id": "F06",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5379031896591187,
+        "missing_gold": [],
+        "top3": [
+          "naver:029:0002965265",
+          "dart:20250313001013",
+          "dart:20260312000744"
+        ]
+      },
+      {
+        "id": "F07",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.5658974051475525,
+        "missing_gold": [],
+        "top3": [
+          "dart:20241010900213",
+          "dart:20241118900152",
+          "dart:20250313001013"
+        ]
+      },
+      {
+        "id": "F08",
+        "type": "fact",
+        "rank": 20,
+        "rank_strict": 20,
+        "top1_score": 0.5843977928161621,
+        "missing_gold": [],
+        "top3": [
+          "naver:018:0005459816",
+          "bioin:industry:335860",
+          "dart:20260831900176"
+        ]
+      },
+      {
+        "id": "F09",
+        "type": "fact",
+        "rank": 7,
+        "rank_strict": 7,
+        "top1_score": 0.6100301742553711,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260831900176",
+          "dart:20251127900375",
+          "naver:053:0000054958"
+        ]
+      },
+      {
+        "id": "F10",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.5731678605079651,
+        "missing_gold": [],
+        "top3": [
+          "dart:20240314802609",
+          "dart:20250318001288",
+          "dart:20251224900987"
+        ]
+      },
+      {
+        "id": "F11",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": null,
+        "top1_score": 0.6778649091720581,
+        "missing_gold": [],
+        "top3": [
+          "naver:079:0003748665",
+          "naver:421:0006690373",
+          "naver:020:0003488147"
+        ]
+      },
+      {
+        "id": "F12",
+        "type": "fact",
+        "rank": 20,
+        "rank_strict": 20,
+        "top1_score": 0.6720508933067322,
+        "missing_gold": [],
+        "top3": [
+          "naver:666:0000015336",
+          "naver:014:0005481465",
+          "naver:366:0000914270"
+        ]
+      },
+      {
+        "id": "F13",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6895331144332886,
+        "missing_gold": [],
+        "top3": [
+          "naver:016:0001905229",
+          "naver:366:0000950750",
+          "naver:117:0003802463"
+        ]
+      },
+      {
+        "id": "F14",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5021729469299316,
+        "missing_gold": [],
+        "top3": [
+          "naver:018:0005670530",
+          "naver:008:0005112013",
+          "naver:421:0008762841"
+        ]
+      },
+      {
+        "id": "F15",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.4717693030834198,
+        "missing_gold": [],
+        "top3": [
+          "naver:092:0002405533",
+          "dart:20261013900671",
+          "naver:092:0002398576"
+        ]
+      },
+      {
+        "id": "F16",
+        "type": "fact",
+        "rank": 6,
+        "rank_strict": 10,
+        "top1_score": 0.6124364137649536,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004261216",
+          "naver:421:0006753162",
+          "naver:025:0003399690"
+        ]
+      },
+      {
+        "id": "F17",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5731406807899475,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156677070",
+          "naver:586:0000073592",
+          "naver:001:0013919072"
+        ]
+      },
+      {
+        "id": "F18",
+        "type": "fact",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6367412805557251,
+        "missing_gold": [],
+        "top3": [
+          "naver:119:0002927155",
+          "naver:117:0003886874",
+          "naver:024:0000079424"
+        ]
+      },
+      {
+        "id": "F19",
+        "type": "fact",
+        "rank": 10,
+        "rank_strict": 10,
+        "top1_score": 0.6270575523376465,
+        "missing_gold": [],
+        "top3": [
+          "naver:005:0001747829",
+          "naver:119:0003040534",
+          "naver:119:0002908021"
+        ]
+      },
+      {
+        "id": "F20",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.7426143884658813,
+        "missing_gold": [],
+        "top3": [
+          "naver:030:0003295936",
+          "naver:005:0001788790",
+          "naver:011:0004259020"
+        ]
+      },
+      {
+        "id": "F21",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6219701766967773,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:321252",
+          "naver:005:0001752296",
+          "bioin:industry:323708"
+        ]
+      },
+      {
+        "id": "F22",
+        "type": "fact",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.7254331707954407,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004434456",
+          "bioin:industry:315228",
+          "bioin:industry:321298"
+        ]
+      },
+      {
+        "id": "F23",
+        "type": "fact",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.7199292182922363,
+        "missing_gold": [],
+        "top3": [
+          "naver:029:0002944021",
+          "bioin:watch:317921",
+          "naver:366:0001025119"
+        ]
+      },
+      {
+        "id": "F24",
+        "type": "fact",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.6066561937332153,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260312000744",
+          "bioin:industry:321694",
+          "bioin:industry:320021"
+        ]
+      },
+      {
+        "id": "F25",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.5480784177780151,
+        "missing_gold": [],
+        "top3": [
+          "naver:018:0005711866",
+          "naver:009:0005393313",
+          "naver:366:0000933819"
+        ]
+      },
+      {
+        "id": "F26",
+        "type": "fact",
+        "rank": 5,
+        "rank_strict": 5,
+        "top1_score": 0.5960935354232788,
+        "missing_gold": [],
+        "top3": [
+          "kipris:KR:1020267012594",
+          "kipris:KR:1020237040489",
+          "kipris:KR:1020267002879"
+        ]
+      },
+      {
+        "id": "F27",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 3,
+        "top1_score": 0.5587536096572876,
+        "missing_gold": [],
+        "top3": [
+          "naver:014:0005409492",
+          "korea_kr:156715141",
+          "naver:138:0002205359"
+        ]
+      },
+      {
+        "id": "F28",
+        "type": "fact",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.5366727113723755,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260821900238",
+          "dart:20240819900248",
+          "dart:20251224900515"
+        ]
+      },
+      {
+        "id": "C01",
+        "type": "comparison",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5445443391799927,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260930900659",
+          "naver:023:0003759735",
+          "dart:20250327000702"
+        ]
+      },
+      {
+        "id": "C02",
+        "type": "comparison",
+        "rank": 14,
+        "rank_strict": 14,
+        "top1_score": 0.5130385756492615,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250313001013",
+          "dart:20260312000744",
+          "dart:20220831900325"
+        ]
+      },
+      {
+        "id": "C03",
+        "type": "comparison",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.5598447322845459,
+        "missing_gold": [],
+        "top3": [
+          "dart:20260831900176",
+          "dart:20251127900375",
+          "naver:296:0000099616"
+        ]
+      },
+      {
+        "id": "C04",
+        "type": "comparison",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.550687313079834,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004531217",
+          "naver:011:0004433116",
+          "naver:023:0003843705"
+        ]
+      },
+      {
+        "id": "C05",
+        "type": "comparison",
+        "rank": 20,
+        "rank_strict": 20,
+        "top1_score": 0.7039540410041809,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004259020",
+          "naver:028:0002629664",
+          "naver:396:0000705850"
+        ]
+      },
+      {
+        "id": "C06",
+        "type": "comparison",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.7286258935928345,
+        "missing_gold": [],
+        "top3": [
+          "bioin:watch:323016",
+          "bioin:industry:321694",
+          "dart:20260323001538"
+        ]
+      },
+      {
+        "id": "C07",
+        "type": "comparison",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.42626047134399414,
+        "missing_gold": [],
+        "top3": [
+          "naver:215:0001068423",
+          "naver:366:0000994778",
+          "naver:018:0006106808"
+        ]
+      },
+      {
+        "id": "C08",
+        "type": "comparison",
+        "rank": 11,
+        "rank_strict": 11,
+        "top1_score": 0.5758787989616394,
+        "missing_gold": [],
+        "top3": [
+          "dart:20250321001484",
+          "dart:20250327000702",
+          "dart:20260323001538"
+        ]
+      },
+      {
+        "id": "C09",
+        "type": "comparison",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6374819874763489,
+        "missing_gold": [],
+        "top3": [
+          "naver:366:0001035846",
+          "naver:008:0005108416",
+          "naver:014:0005403012"
+        ]
+      },
+      {
+        "id": "T01",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.7115917205810547,
+        "missing_gold": [],
+        "top3": [
+          "naver:018:0005653104",
+          "naver:366:0000950750",
+          "naver:016:0001905229"
+        ]
+      },
+      {
+        "id": "T02",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.710460901260376,
+        "missing_gold": [],
+        "top3": [
+          "naver:016:0001905229",
+          "naver:366:0000950750",
+          "naver:366:0001026471"
+        ]
+      },
+      {
+        "id": "T03",
+        "type": "temporal",
+        "rank": 6,
+        "rank_strict": 6,
+        "top1_score": 0.71151202917099,
+        "missing_gold": [],
+        "top3": [
+          "naver:366:0000950750",
+          "naver:366:0001026566",
+          "naver:117:0003802463"
+        ]
+      },
+      {
+        "id": "T04",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6623283624649048,
+        "missing_gold": [],
+        "top3": [
+          "naver:243:0000031753",
+          "naver:050:0000062564",
+          "naver:421:0006690373"
+        ]
+      },
+      {
+        "id": "T05",
+        "type": "temporal",
+        "rank": 18,
+        "rank_strict": 18,
+        "top1_score": 0.4763490557670593,
+        "missing_gold": [],
+        "top3": [
+          "naver:296:0000099616",
+          "naver:024:0000104356",
+          "dart:20260902900182"
+        ]
+      },
+      {
+        "id": "T06",
+        "type": "temporal",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.5791493058204651,
+        "missing_gold": [],
+        "top3": [
+          "naver:277:0005203325",
+          "korea_kr:156732748",
+          "naver:277:0005331461"
+        ]
+      },
+      {
+        "id": "T07",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5891194939613342,
+        "missing_gold": [],
+        "top3": [
+          "naver:023:0003749332",
+          "korea_kr:156556897",
+          "naver:417:0000787040"
+        ]
+      },
+      {
+        "id": "T08",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6160061955451965,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156621053",
+          "korea_kr:156590250",
+          "korea_kr:156715141"
+        ]
+      },
+      {
+        "id": "T09",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.5027802586555481,
+        "missing_gold": [],
+        "top3": [
+          "dart:20241118900152",
+          "dart:20250611900152",
+          "dart:20250314900117"
+        ]
+      },
+      {
+        "id": "T10",
+        "type": "temporal",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.6620230078697205,
+        "missing_gold": [],
+        "top3": [
+          "bioin:report:332926",
+          "naver:005:0001747829",
+          "bioin:industry:324728"
+        ]
+      },
+      {
+        "id": "S01",
+        "type": "synthesis",
+        "rank": 10,
+        "rank_strict": 10,
+        "top1_score": 0.6151990294456482,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004335552",
+          "naver:014:0005403012",
+          "naver:366:0001111588"
+        ]
+      },
+      {
+        "id": "S02",
+        "type": "synthesis",
+        "rank": 9,
+        "rank_strict": 9,
+        "top1_score": 0.7196522951126099,
+        "missing_gold": [],
+        "top3": [
+          "naver:648:0000012354",
+          "naver:021:0002498415",
+          "bioin:industry:329129"
+        ]
+      },
+      {
+        "id": "S03",
+        "type": "synthesis",
+        "rank": 4,
+        "rank_strict": 4,
+        "top1_score": 0.4673424959182739,
+        "missing_gold": [],
+        "top3": [
+          "bioin:watch:335954",
+          "naver:366:0001086584",
+          "bioin:watch:323016"
+        ]
+      },
+      {
+        "id": "S04",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5492141246795654,
+        "missing_gold": [],
+        "top3": [
+          "naver:417:0000787040",
+          "naver:277:0005331461",
+          "naver:417:0000806764"
+        ]
+      },
+      {
+        "id": "S05",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.61812424659729,
+        "missing_gold": [],
+        "top3": [
+          "bioin:industry:326167",
+          "naver:009:0005570212",
+          "naver:243:0000071144"
+        ]
+      },
+      {
+        "id": "S06",
+        "type": "synthesis",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.5179833173751831,
+        "missing_gold": [],
+        "top3": [
+          "naver:366:0000949572",
+          "naver:018:0005711866",
+          "naver:366:0000967433"
+        ]
+      },
+      {
+        "id": "S07",
+        "type": "synthesis",
+        "rank": 10,
+        "rank_strict": 10,
+        "top1_score": 0.6683130860328674,
+        "missing_gold": [],
+        "top3": [
+          "naver:011:0004434456",
+          "naver:092:0002273870",
+          "naver:008:0005108416"
+        ]
+      },
+      {
+        "id": "F29",
+        "type": "fact",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.7090390920639038,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156590250",
+          "naver:277:0005297663",
+          "korea_kr:156572068"
+        ]
+      },
+      {
+        "id": "F30",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6212319135665894,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156556897",
+          "korea_kr:156590250",
+          "naver:277:0005339820"
+        ]
+      },
+      {
+        "id": "F31",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6506342887878418,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156663234",
+          "naver:417:0000787040",
+          "korea_kr:156785554"
+        ]
+      },
+      {
+        "id": "F32",
+        "type": "fact",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.672394871711731,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156752395",
+          "korea_kr:156507111",
+          "korea_kr:156671971"
+        ]
+      },
+      {
+        "id": "F33",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6160959005355835,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156752395",
+          "naver:024:0000074939",
+          "naver:009:0005285145"
+        ]
+      },
+      {
+        "id": "F34",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6575697660446167,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156666970",
+          "bioin:industry:333874",
+          "naver:092:0002324539"
+        ]
+      },
+      {
+        "id": "F35",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6738888621330261,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156533554",
+          "korea_kr:156555064",
+          "korea_kr:156560813"
+        ]
+      },
+      {
+        "id": "F36",
+        "type": "fact",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6896516680717468,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156751284",
+          "korea_kr:156770742",
+          "naver:008:0005290806"
+        ]
+      },
+      {
+        "id": "T11",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6341694593429565,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156606716",
+          "korea_kr:156665954",
+          "korea_kr:156643638"
+        ]
+      },
+      {
+        "id": "T12",
+        "type": "temporal",
+        "rank": 8,
+        "rank_strict": 8,
+        "top1_score": 0.5748506784439087,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156605806",
+          "korea_kr:156605993",
+          "naver:008:0004930251"
+        ]
+      },
+      {
+        "id": "T13",
+        "type": "temporal",
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6585354804992676,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156785554",
+          "korea_kr:156556897",
+          "korea_kr:156663234"
+        ]
+      },
+      {
+        "id": "T14",
+        "type": "temporal",
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.6527119874954224,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156590250",
+          "korea_kr:156715141",
+          "korea_kr:156621053"
+        ]
+      },
+      {
+        "id": "S08",
+        "type": "synthesis",
+        "rank": null,
+        "rank_strict": null,
+        "top1_score": 0.5441130995750427,
+        "missing_gold": [],
+        "top3": [
+          "korea_kr:156785554",
+          "naver:417:0000787040",
+          "korea_kr:156581869"
+        ]
+      },
+      {
+        "id": "S09",
+        "type": "synthesis",
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.7161151170730591,
+        "missing_gold": [],
+        "top3": [
+          "naver:009:0005692230",
+          "korea_kr:156643638",
+          "korea_kr:156731107"
+        ]
+      }
+    ]
+  }
+}
