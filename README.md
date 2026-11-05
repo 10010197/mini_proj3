@@ -69,13 +69,17 @@ project3/
 │   ├── embed.py                  #   임베딩 (text-embedding-3-small) + 캐시  ✅
 │   └── load.py                   #   Chroma 적재 + 적재 검증  ✅
 ├── store/                        # ③ 저장 계층 (chroma/ 벡터·청크·메타데이터, docs.db 원문)  ✅
-├── rag/                          # 체인 (retriever · chain · prompts)
+├── rag/                          # ④ 체인 — 챗봇·평가 하네스가 같은 rag.chain.ask() 호출
+│   ├── retriever.py              #   Chroma 읽기 전용 검색 + 문서 단위 정리 + 원문 조회(docs.db)  ✅
+│   ├── prompts.py                #   시스템 프롬프트 (근거 번호 인용, 출처별 구분, 거절 규칙)  ✅
+│   └── chain.py                  #   LangChain 체인 (ChatOpenAI, 기본 gpt-5.4-mini)  ✅
 ├── eval/                         # 평가 하네스
+│   ├── run_eval.py               #   평가셋 전체를 rag.chain.ask로 실행 → 검색·인용·거절·정확도·충실도  ✅
 │   ├── eval_set.jsonl            #   평가셋 (사실·비교·시점·종합·답변 불가)  ✅
 │   ├── retrieval_eval.py         #   검색 평가 Hit@k · MRR  ✅
 │   └── kb_coverage.py            #   대표 질문별 근거 커버리지 (부족 자료 탐색)  ✅
 ├── app/                          # ④ 챗봇 UI (조회 전용)
-├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing)
+├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing · evaluation)
 └── report/
 ```
 
@@ -367,6 +371,16 @@ python -m eval.kb_coverage
 
 ```bash
 python -m eval.retrieval_eval
+```
+
+```bash
+# 평가 하네스: 챗봇과 같은 체인으로 79문항 실행 + LLM 채점 (약 5분) → eval/results/answer_eval_*.json, answer_review_*.csv
+python -m eval.run_eval
+```
+
+```bash
+# 일부 문항만, 채점 생략
+python -m eval.run_eval --ids F01 U01 --no-judge
 ```
 
 옵션: `--src <파일|디렉터리>`, `--db store/docs.db`, `--since 2023-01-01`, `--until 2026-06-30`

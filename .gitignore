@@ -7,3 +7,4 @@ store/embeddings/
 store/*.log
 __pycache__/
 .ipynb_checkpoints/
+eval/results/*.log
