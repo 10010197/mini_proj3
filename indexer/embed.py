@@ -48,7 +48,21 @@ def text_hash(text: str) -> str:
     return hashlib.sha1(text.encode()).hexdigest()
 
 
-def embed_texts(texts: list[str], model: str = DEFAULT_MODEL, normalize: bool = True) -> np.ndarray:
+def count_cached(texts: list[str], model: str = DEFAULT_MODEL) -> int:
+    """캐시에 벡터가 있는 고유 텍스트 수 (API 호출 없음, 인덱싱 검증용)."""
+    uniq = list({text_hash(t) for t in texts})
+    con = _db(model)
+    n = 0
+    for i in range(0, len(uniq), 900):
+        part = uniq[i:i + 900]
+        n += con.execute(f"SELECT COUNT(*) FROM emb WHERE h IN ({','.join('?' * len(part))})", part).fetchone()[0]
+    con.close()
+    return n
+
+
+def embed_texts(texts: list[str], model: str = DEFAULT_MODEL, normalize: bool = True,
+                cache_only: bool = False) -> np.ndarray:
+    """cache_only=True면 API를 부르지 않고, 캐시에 없는 텍스트가 있으면 오류를 낸다 (벡터 DB 적재용)."""
     hashes = [text_hash(t) for t in texts]
     con = _db(model)
     have: dict[str, np.ndarray] = {}
@@ -58,6 +72,9 @@ def embed_texts(texts: list[str], model: str = DEFAULT_MODEL, normalize: bool = 
         for h, v in con.execute(f"SELECT h, v FROM emb WHERE h IN ({','.join('?' * len(part))})", part):
             have[h] = np.frombuffer(v, dtype=np.float32)
     todo = {h: t for h, t in zip(hashes, texts) if h not in have}
+    if todo and cache_only:
+        con.close()
+        raise RuntimeError(f"임베딩 캐시에 없는 텍스트 {len(todo)}개 — 먼저 `python -m indexer embed` 실행")
     if todo:
         log.info("%s: 캐시 %d, 새로 임베딩 %d", model, len(have), len(todo))
         client = _client()

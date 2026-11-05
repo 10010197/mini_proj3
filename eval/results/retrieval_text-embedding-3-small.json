@@ -2,34 +2,34 @@
   "fixed": {
     "config": "fixed",
     "model": "text-embedding-3-small",
-    "chunks": 45522,
+    "chunks": 47662,
     "overall": {
       "n": 68,
-      "hit@1": 0.368,
-      "hit@3": 0.529,
+      "hit@1": 0.353,
+      "hit@3": 0.515,
       "hit@5": 0.632,
       "hit@10": 0.691,
-      "mrr": 0.473,
-      "hit@3_strict": 0.5
+      "mrr": 0.464,
+      "hit@3_strict": 0.485
     },
     "by_type": {
       "comparison": {
         "n": 9,
-        "hit@1": 0.222,
+        "hit@1": 0.111,
         "hit@3": 0.667,
         "hit@5": 0.778,
         "hit@10": 0.778,
-        "mrr": 0.43,
+        "mrr": 0.374,
         "hit@3_strict": 0.556
       },
       "fact": {
         "n": 36,
         "hit@1": 0.528,
-        "hit@3": 0.639,
+        "hit@3": 0.611,
         "hit@5": 0.778,
         "hit@10": 0.833,
-        "mrr": 0.622,
-        "hit@3_strict": 0.611
+        "mrr": 0.62,
+        "hit@3_strict": 0.583
       },
       "synthesis": {
         "n": 9,
@@ -245,7 +245,7 @@
         "top3": [
           "dart:20261013900671",
           "naver:092:0002405533",
-          "naver:018:0006254356"
+          "korea_kr:156758324"
         ]
       },
       {
@@ -271,7 +271,7 @@
         "top3": [
           "korea_kr:156715045",
           "korea_kr:156646097",
-          "naver:081:0003433199"
+          "korea_kr:156636437"
         ]
       },
       {
@@ -290,8 +290,8 @@
       {
         "id": "F19",
         "type": "fact",
-        "rank": 7,
-        "rank_strict": 7,
+        "rank": 6,
+        "rank_strict": 6,
         "top1_score": 0.6111049652099609,
         "missing_gold": [],
         "top3": [
@@ -348,8 +348,8 @@
         "missing_gold": [],
         "top3": [
           "bioin:watch:317921",
-          "naver:366:0001025119",
-          "bioin:watch:331356"
+          "bioin:watch:332950",
+          "naver:366:0001025119"
         ]
       },
       {
@@ -357,7 +357,7 @@
         "type": "fact",
         "rank": 1,
         "rank_strict": 1,
-        "top1_score": 0.6348910331726074,
+        "top1_score": 0.6383252143859863,
         "missing_gold": [],
         "top3": [
           "bioin:industry:320021",
@@ -381,14 +381,14 @@
       {
         "id": "F26",
         "type": "fact",
-        "rank": 3,
-        "rank_strict": 3,
+        "rank": 4,
+        "rank_strict": 4,
         "top1_score": 0.5819923877716064,
         "missing_gold": [],
         "top3": [
           "kipris:KR:1020267012594",
-          "kipris:KR:1020237040489",
-          "kipris:KR:1020247036601"
+          "dart:20230622900137",
+          "kipris:KR:1020237040489"
         ]
       },
       {
@@ -485,13 +485,13 @@
       {
         "id": "C06",
         "type": "comparison",
-        "rank": 1,
-        "rank_strict": 1,
-        "top1_score": 0.6704286336898804,
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.6904945373535156,
         "missing_gold": [],
         "top3": [
-          "bioin:industry:321694",
           "bioin:watch:323016",
+          "bioin:industry:321694",
           "bioin:industry:324101"
         ]
       },
@@ -661,7 +661,7 @@
         "top3": [
           "bioin:report:332926",
           "naver:011:0004365915",
-          "bioin:report:327600"
+          "naver:005:0001747829"
         ]
       },
       {
@@ -799,7 +799,7 @@
         "type": "fact",
         "rank": 1,
         "rank_strict": 1,
-        "top1_score": 0.6836198568344116,
+        "top1_score": 0.6977120637893677,
         "missing_gold": [],
         "top3": [
           "korea_kr:156671971",
@@ -816,8 +816,8 @@
         "missing_gold": [],
         "top3": [
           "korea_kr:156752395",
-          "bioin:report:335681",
-          "naver:648:0000008822"
+          "korea_kr:156671971",
+          "bioin:report:335681"
         ]
       },
       {
@@ -830,7 +830,7 @@
         "top3": [
           "korea_kr:156666970",
           "naver:648:0000008822",
-          "naver:417:0000909949"
+          "korea_kr:156671971"
         ]
       },
       {
@@ -894,8 +894,8 @@
         "missing_gold": [],
         "top3": [
           "korea_kr:156785554",
-          "korea_kr:156715141",
-          "naver:277:0005339820"
+          "korea_kr:156732748",
+          "korea_kr:156715141"
         ]
       },
       {
@@ -942,15 +942,15 @@
   "structure": {
     "config": "structure",
     "model": "text-embedding-3-small",
-    "chunks": 54224,
+    "chunks": 57433,
     "overall": {
       "n": 68,
-      "hit@1": 0.368,
-      "hit@3": 0.603,
+      "hit@1": 0.353,
+      "hit@3": 0.588,
       "hit@5": 0.647,
       "hit@10": 0.735,
-      "mrr": 0.495,
-      "hit@3_strict": 0.544
+      "mrr": 0.483,
+      "hit@3_strict": 0.529
     },
     "by_type": {
       "comparison": {
@@ -965,11 +965,11 @@
       "fact": {
         "n": 36,
         "hit@1": 0.5,
-        "hit@3": 0.722,
+        "hit@3": 0.694,
         "hit@5": 0.806,
         "hit@10": 0.889,
-        "mrr": 0.631,
-        "hit@3_strict": 0.667
+        "mrr": 0.623,
+        "hit@3_strict": 0.639
       },
       "synthesis": {
         "n": 9,
@@ -982,11 +982,11 @@
       },
       "temporal": {
         "n": 14,
-        "hit@1": 0.357,
+        "hit@1": 0.286,
         "hit@3": 0.571,
         "hit@5": 0.571,
         "hit@10": 0.643,
-        "mrr": 0.441,
+        "mrr": 0.406,
         "hit@3_strict": 0.571
       }
     },
@@ -1178,14 +1178,14 @@
       {
         "id": "F15",
         "type": "fact",
-        "rank": 2,
-        "rank_strict": 2,
-        "top1_score": 0.48760154843330383,
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.4909571707248688,
         "missing_gold": [],
         "top3": [
+          "korea_kr:156758324",
           "naver:092:0002405533",
-          "dart:20261013900671",
-          "korea_kr:156758324"
+          "dart:20261013900671"
         ]
       },
       {
@@ -1297,7 +1297,7 @@
         "type": "fact",
         "rank": 1,
         "rank_strict": 1,
-        "top1_score": 0.601492702960968,
+        "top1_score": 0.6370596885681152,
         "missing_gold": [],
         "top3": [
           "bioin:industry:320021",
@@ -1321,14 +1321,14 @@
       {
         "id": "F26",
         "type": "fact",
-        "rank": 3,
-        "rank_strict": 3,
+        "rank": 5,
+        "rank_strict": 5,
         "top1_score": 0.5777368545532227,
         "missing_gold": [],
         "top3": [
           "kipris:KR:1020267012594",
-          "kipris:KR:1020237040489",
-          "kipris:KR:1020247036601"
+          "dart:20230622900137",
+          "kipris:KR:1020237040489"
         ]
       },
       {
@@ -1542,13 +1542,13 @@
       {
         "id": "T06",
         "type": "temporal",
-        "rank": 1,
-        "rank_strict": 1,
-        "top1_score": 0.6019067764282227,
+        "rank": 2,
+        "rank_strict": 2,
+        "top1_score": 0.6130318641662598,
         "missing_gold": [],
         "top3": [
-          "naver:009:0005058513",
           "korea_kr:156732748",
+          "naver:009:0005058513",
           "naver:008:0004930251"
         ]
       },
@@ -1739,7 +1739,7 @@
         "type": "fact",
         "rank": 1,
         "rank_strict": 1,
-        "top1_score": 0.6689140796661377,
+        "top1_score": 0.7164779901504517,
         "missing_gold": [],
         "top3": [
           "korea_kr:156671971",
@@ -1756,8 +1756,8 @@
         "missing_gold": [],
         "top3": [
           "korea_kr:156752395",
-          "naver:024:0000074939",
-          "naver:003:0013791014"
+          "korea_kr:156671971",
+          "naver:024:0000074939"
         ]
       },
       {
@@ -1770,7 +1770,7 @@
         "top3": [
           "korea_kr:156666970",
           "naver:648:0000008822",
-          "bioin:industry:333874"
+          "korea_kr:156671971"
         ]
       },
       {
@@ -1835,7 +1835,7 @@
         "top3": [
           "korea_kr:156785554",
           "korea_kr:156663234",
-          "korea_kr:156715141"
+          "korea_kr:156732748"
         ]
       },
       {
@@ -1882,14 +1882,14 @@
   "structure_notitle": {
     "config": "structure_notitle",
     "model": "text-embedding-3-small",
-    "chunks": 54224,
+    "chunks": 57433,
     "overall": {
       "n": 68,
-      "hit@1": 0.235,
+      "hit@1": 0.25,
       "hit@3": 0.382,
       "hit@5": 0.485,
       "hit@10": 0.618,
-      "mrr": 0.344,
+      "mrr": 0.354,
       "hit@3_strict": 0.368
     },
     "by_type": {
@@ -1904,21 +1904,21 @@
       },
       "fact": {
         "n": 36,
-        "hit@1": 0.306,
-        "hit@3": 0.5,
+        "hit@1": 0.333,
+        "hit@3": 0.472,
         "hit@5": 0.611,
         "hit@10": 0.722,
-        "mrr": 0.429,
-        "hit@3_strict": 0.472
+        "mrr": 0.445,
+        "hit@3_strict": 0.444
       },
       "synthesis": {
         "n": 9,
         "hit@1": 0.111,
-        "hit@3": 0.222,
+        "hit@3": 0.333,
         "hit@5": 0.333,
         "hit@10": 0.667,
-        "mrr": 0.229,
-        "hit@3_strict": 0.222
+        "mrr": 0.238,
+        "hit@3_strict": 0.333
       },
       "temporal": {
         "n": 14,
@@ -1930,7 +1930,7 @@
         "hit@3_strict": 0.286
       }
     },
-    "answerable_top1_score_median": 0.6156,
+    "answerable_top1_score_median": 0.6161,
     "unanswerable_top1_score_median": 0.5721,
     "items": [
       {
@@ -2209,14 +2209,14 @@
       {
         "id": "F22",
         "type": "fact",
-        "rank": 3,
-        "rank_strict": 3,
+        "rank": 4,
+        "rank_strict": 4,
         "top1_score": 0.7254331707954407,
         "missing_gold": [],
         "top3": [
           "naver:011:0004434456",
           "bioin:industry:315228",
-          "bioin:industry:321298"
+          "bioin:industry:320387"
         ]
       },
       {
@@ -2235,14 +2235,14 @@
       {
         "id": "F24",
         "type": "fact",
-        "rank": 3,
-        "rank_strict": 3,
-        "top1_score": 0.6066561937332153,
+        "rank": 1,
+        "rank_strict": 1,
+        "top1_score": 0.6343555450439453,
         "missing_gold": [],
         "top3": [
+          "bioin:industry:320021",
           "dart:20260312000744",
-          "bioin:industry:321694",
-          "bioin:industry:320021"
+          "bioin:industry:321694"
         ]
       },
       {
@@ -2573,14 +2573,14 @@
       {
         "id": "S03",
         "type": "synthesis",
-        "rank": 4,
-        "rank_strict": 4,
-        "top1_score": 0.4673424959182739,
+        "rank": 3,
+        "rank_strict": 3,
+        "top1_score": 0.46484705805778503,
         "missing_gold": [],
         "top3": [
-          "bioin:watch:335954",
           "naver:366:0001086584",
-          "bioin:watch:323016"
+          "bioin:watch:323016",
+          "bioin:industry:321694"
         ]
       },
       {
@@ -2670,8 +2670,8 @@
         "missing_gold": [],
         "top3": [
           "korea_kr:156663234",
-          "naver:417:0000787040",
-          "korea_kr:156785554"
+          "korea_kr:156732748",
+          "naver:417:0000787040"
         ]
       },
       {
@@ -2697,7 +2697,7 @@
         "top3": [
           "korea_kr:156752395",
           "naver:024:0000074939",
-          "naver:009:0005285145"
+          "korea_kr:156671971"
         ]
       },
       {
@@ -2774,8 +2774,8 @@
         "missing_gold": [],
         "top3": [
           "korea_kr:156785554",
-          "korea_kr:156556897",
-          "korea_kr:156663234"
+          "korea_kr:156721449",
+          "korea_kr:156556897"
         ]
       },
       {

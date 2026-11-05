@@ -9,7 +9,7 @@
 | disclosure  | `항목 | 값` 표 줄 (정정 공시는 정정표 + 정정 후 전문) | 수시공시 1개, 사업보고서는 `II.`·`1.`·`가.`·`(1)` 헤딩 계층 | 투자 유의 문구 |
 | patent      | 서지 줄(명칭·출원인·IPC) + `요약:` (+ `청구항`)        | 서지+요약 / 청구항                | — |
 | report      | `□ ○ ■ 【】 1.` 헤딩, 요약문 + 본문                    | 헤딩 기준                         | `(계속)` 꼬리, 머리 서지 줄 |
-| policy      | 제목·부제(`- … -`) + `□`/`○` 문단, 하단 붙임 목록       | `□` 헤딩 기준                     | 붙임·별첨 목록, 의견 제출 안내 |
+| policy      | 제목·부제(`- … -`) + `□`/`○` 문단, 하단 붙임 목록·내용  | `□`·`붙임N` 헤딩 기준             | 붙임·별첨 목록(내용은 유지), 쪽 번호, 의견 제출 안내 |
 """
 from __future__ import annotations
 
@@ -80,7 +80,7 @@ def parse_news(doc_id: str, title: str, body: str) -> ParsedDoc:
 
 
 DART_NOTICE = re.compile(
-    r"^투자 ?유의사항 \|.*$"                                   # 표 첫 줄로 들어간 경우
+    r"^투자 ?유의사항 \|[^\n]*$"                               # 표 첫 줄로 들어간 경우 (re.S라서 .* 대신 [^\n]*: 그 줄만 지움)
     r"|※\s?투자\s?유의\s?사항.*?신중(히|하게)\s?투자하시기\s?바랍니다\.?",  # 본문 문장으로 들어간 경우
     re.M | re.S,
 )
@@ -151,6 +151,8 @@ REPORT_HEADING = re.compile(r"^(【[^】]+】|□\s?.{2,80}|■\s?.{2,80}|[Ⅰ�
 def parse_report(doc_id: str, title: str, body: str) -> ParsedDoc:
     n0 = len(body)
     t = REPORT_TAIL.sub("", norm_ws(body))
+    # 머리말(게시판·발행·키워드 줄)은 줄을 이어 붙이기 전에 지운다. 이어 붙인 뒤에 지우면 본문 전체가 한 줄이 되어 함께 지워진다.
+    t = "\n".join(x for i, x in enumerate(t.split("\n")) if not (i < 4 and REPORT_HEAD_LINES.match(x)))
     # PDF 변환 흔적 ①: 단어마다 줄이 바뀐 문서(줄 길이 중앙값 < 20자) → 줄을 이어 붙이고 □○■·숫자 헤딩 앞에서만 줄바꿈
     lens = sorted(len(x) for x in t.split("\n"))
     if lens and lens[len(lens) // 2] < 20:
@@ -160,7 +162,7 @@ def parse_report(doc_id: str, title: str, body: str) -> ParsedDoc:
     t = re.sub(r"\s+([.,)%])(?=\s|$)", r"\1", t)
     t = re.sub(r"(\d) (?=(억|천|만|조|%|년|개|건|명|배|달러|원)\b)", r"\1", t)
     t = re.sub(r"([억천만조]) (?=\d)", r"\1", t)
-    lines = [x for i, x in enumerate(t.split("\n")) if not (i < 4 and REPORT_HEAD_LINES.match(x))]
+    lines = t.split("\n")
     sections, cur_name, cur = [], "본문", []
     for line in lines:
         if REPORT_HEADING.match(line) and len(line) <= 90:
@@ -176,17 +178,38 @@ def parse_report(doc_id: str, title: str, body: str) -> ParsedDoc:
     return out
 
 
-POLICY_TAIL = re.compile(r"\n(<\s?(별첨|붙임|참고)\s?>|붙임\s?\d|별첨\s?\d|< 의견 제출방법 >|※ ?국민참여입법센터).*$", re.S)
+POLICY_TAIL = re.compile(r"\n(< 의견 제출방법 >|※ ?국민참여입법센터).*$", re.S)
+# 붙임 '목록'(본문 끝의 `<붙임> 1. … 2. …` + 부서명 줄)만 지우고, 붙임 '내용'(실태조사 수치, 처방 제한 목록 등)은 남긴다.
+# 목록은 첫 번째 실제 붙임 머리(`붙임1`, `붙임 코로나19 …`)나 `□` 문단이 나오기 전까지다.
+POLICY_ATTACH_LIST = re.compile(r"^<\s?(별첨|붙임|참고)\s?>")
+POLICY_ATTACH_HEAD = re.compile(r"^(붙임|별첨)(\s?\d+)?(\s|$)")
+POLICY_PAGE_NO = re.compile(r"^-\s?\d{1,3}\s?-$")
+ATTACH_LIST_MAX_LINES = 15
+
+
+def _drop_attach_list(lines: list[str]) -> list[str]:
+    out, skip = [], 0
+    for line in lines:
+        if POLICY_ATTACH_LIST.match(line):
+            skip = ATTACH_LIST_MAX_LINES
+            continue
+        if skip and (POLICY_ATTACH_HEAD.match(line) or line.startswith("□")):
+            skip = 0
+        if skip:
+            skip -= 1
+            continue
+        out.append(line)
+    return out
 
 
 def parse_policy(doc_id: str, title: str, body: str) -> ParsedDoc:
     n0 = len(body)
     t = POLICY_TAIL.sub("", norm_ws(body))
-    lines = t.split("\n")
-    # 제목·부제 반복(첫 줄들이 제목과 같거나 '- … -' 부제)은 '요지' 섹션으로
+    lines = [x for x in _drop_attach_list(t.split("\n")) if not POLICY_PAGE_NO.match(x)]
+    # 제목·부제 반복(첫 줄들이 제목과 같거나 '- … -' 부제)은 '요지' 섹션으로. 붙임 머리는 새 섹션('붙임1 …')을 연다.
     sections, cur_name, cur = [], "요지", []
     for line in lines:
-        if line.startswith("□") and cur:
+        if (line.startswith("□") or POLICY_ATTACH_HEAD.match(line)) and cur:
             sections.append(Section(cur_name, "\n".join(cur)))
             cur_name, cur = line[:40].strip("□ "), [line]
             continue

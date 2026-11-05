@@ -66,8 +66,9 @@ project3/
 │   ├── parse.py                  #   문서 종류별 섹션 분할·정제  ✅
 │   ├── dedup.py                  #   청크 단위 중복 처리  ✅
 │   ├── chunk.py                  #   청킹 설정 3종 + 청크 메타데이터  ✅
-│   └── embed.py                  #   임베딩 (text-embedding-3-small) + 캐시  ✅
-├── store/                        # ③ 저장 계층 (chroma/, docs.db)
+│   ├── embed.py                  #   임베딩 (text-embedding-3-small) + 캐시  ✅
+│   └── load.py                   #   Chroma 적재 + 적재 검증  ✅
+├── store/                        # ③ 저장 계층 (chroma/ 벡터·청크·메타데이터, docs.db 원문)  ✅
 ├── rag/                          # 체인 (retriever · chain · prompts)
 ├── eval/                         # 평가 하네스
 │   ├── eval_set.jsonl            #   평가셋 (사실·비교·시점·종합·답변 불가)  ✅
@@ -342,6 +343,21 @@ python -m indexer chunk
 
 ```bash
 python -m indexer embed --configs structure
+```
+
+```bash
+# 문서 수·청크 수·임베딩 수 대조 (chunk·embed 끝에 자동 실행, 실패 시 종료 코드 1)
+python -m indexer verify
+```
+
+```bash
+# 벡터 DB 적재 (structure → store/chroma/, 캐시 벡터만 사용 · 약 2분) + 적재 검증
+python -m indexer load
+```
+
+```bash
+# 적재 검증만 다시 (개수·빈 청크·벡터·영속화·샘플 검색 → store/vector_load_stats.json)
+python -m indexer verify-load
 ```
 
 ```bash
