@@ -20,7 +20,9 @@ LLM 채점은 참고값이다. 사람 검토용 CSV(manual_score 칸)로 직접 
     python -m eval.run_eval --ids F01 U01 --no-judge # 일부 문항, 채점 생략
     python -m eval.run_eval --types fact temporal --limit 10
     python -m eval.run_eval --chat-model gpt-5.4     # 생성 모델 비교
+    python -m eval.run_eval --chunk-config fixed     # 청킹 설정 비교 (해당 컬렉션을 먼저 적재)
 결과: eval/results/answer_eval_{tag}.json (요약 + 문항별), eval/results/answer_review_{tag}.csv
+      tag 기본값 = {청킹 설정}__{생성 모델}
 """
 from __future__ import annotations
 
@@ -36,6 +38,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from eval.retrieval_eval import EVAL_SET, OUT_DIR, ROOT, correction_aliases, event_siblings, load_eval
+from indexer.chunk import CONFIGS
 from rag import chain, retriever
 from rag.prompts import format_context
 
@@ -218,7 +221,11 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--judge-model", default=JUDGE_MODEL)
     ap.add_argument("--no-judge", action="store_true")
     ap.add_argument("--workers", type=int, default=4)
-    ap.add_argument("--tag", help="결과 파일 이름 (기본: 생성 모델명, 부분 실행이면 _partial)")
+    ap.add_argument("--chunk-config", choices=CONFIGS, default=None,
+                    help="검색할 컬렉션의 청킹 설정 (기본: 챗봇과 같은 structure). 먼저 `python -m indexer load --configs ...`")
+    ap.add_argument("--retrieval", choices=retriever.MODES, default=None,
+                    help="검색 방식 (기본: RETRIEVAL_MODE). dense · hybrid(+BM25) · hybrid_time(+질문 연도)")
+    ap.add_argument("--tag", help="결과 파일 이름 (기본: {청킹 설정}__{검색 방식}__{생성 모델}, 부분 실행이면 _partial)")
     args = ap.parse_args(argv)
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -233,6 +240,8 @@ def main(argv: list[str] | None = None) -> None:
         items = items[:args.limit]
     partial = len(items) < len(load_eval())
 
+    if args.chunk_config or args.retrieval:
+        retriever.configure(chunk_config=args.chunk_config, mode=args.retrieval)
     alias_path = ROOT / "store" / "chunks" / f"{retriever.CHUNK_CONFIG}_doc_alias.json"
     alias = json.loads(alias_path.read_text(encoding="utf-8")) if alias_path.exists() else {}
     siblings, corrections = event_siblings(), correction_aliases()
@@ -252,11 +261,12 @@ def main(argv: list[str] | None = None) -> None:
 
     k_docs = retriever.K_DOCS
     summary = summarize(rows, k_docs)
-    tag = args.tag or (args.chat_model + ("_partial" if partial else ""))
+    tag = args.tag or (f"{retriever.CHUNK_CONFIG}__{retriever.RETRIEVAL_MODE}__{args.chat_model}"
+                       + ("_partial" if partial else ""))
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out = {
         "run": {"chat_model": args.chat_model, "judge_model": judge_model, "embed_model": retriever.EMBED_MODEL,
-                "collection": retriever.COLLECTION, "k_docs": k_docs, "max_chunks_per_doc": retriever.MAX_CHUNKS_PER_DOC,
+                "collection": retriever.COLLECTION, "retrieval_mode": retriever.RETRIEVAL_MODE, "k_docs": k_docs, "max_chunks_per_doc": retriever.MAX_CHUNKS_PER_DOC,
                 "eval_set": EVAL_SET.name, "n_items": len(items), "elapsed_s": round(time.perf_counter() - t0, 1),
                 "finished_at": time.strftime("%Y-%m-%dT%H:%M:%S")},
         "summary": summary,

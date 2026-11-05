@@ -8,3 +8,4 @@ store/*.log
 __pycache__/
 .ipynb_checkpoints/
 eval/results/*.log
+store/bm25/

@@ -6,6 +6,7 @@
     python -m indexer verify                      # 문서 수·청크 수·임베딩 수 대조 (API 호출 없음, 실패 시 종료 코드 1)
     python -m indexer load                        # structure 청크 → store/chroma/ 적재 + 적재 검증 (indexer/load.py)
     python -m indexer verify-load                 # 적재 검증만 다시 (개수·빈 청크·벡터·영속화·샘플 검색)
+    python -m indexer bm25                        # 하이브리드 검색용 BM25 인덱스 → store/bm25/structure.npz (indexer/bm25.py)
 
 chunk·embed는 끝날 때 verify를 자동으로 실행한다. 검증 결과는 chunk_stats.json의 {config}.verify에 남는다.
 
@@ -165,7 +166,7 @@ def run_verify(configs: list[str], model: str | None, db_path: Path = storage.DE
 
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(prog="python -m indexer")
-    ap.add_argument("command", choices=["chunk", "embed", "verify", "load", "verify-load"])
+    ap.add_argument("command", choices=["chunk", "embed", "verify", "load", "verify-load", "bm25"])
     ap.add_argument("--configs", nargs="+", default=None, choices=list(CONFIGS),
                     help="기본: chunk·embed·verify는 전체, load·verify-load는 structure(챗봇이 쓰는 설정)")
     ap.add_argument("--model", default=None)
@@ -178,7 +179,14 @@ def main(argv: list[str] | None = None) -> None:
 
     model = args.model or DEFAULT_MODEL
     if args.configs is None:
-        args.configs = ["structure"] if args.command in ("load", "verify-load") else list(CONFIGS)
+        args.configs = ["structure"] if args.command in ("load", "verify-load", "bm25") else list(CONFIGS)
+    if args.command == "bm25":
+        from indexer.bm25 import build
+
+        if not all(build(cfg)["ok"] for cfg in args.configs):
+            log.error("BM25 인덱스 검증 실패")
+            sys.exit(1)
+        return
     if args.command in ("load", "verify-load"):
         from indexer.load import load_config, verify_load
 

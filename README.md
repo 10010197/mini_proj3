@@ -67,10 +67,12 @@ project3/
 │   ├── dedup.py                  #   청크 단위 중복 처리  ✅
 │   ├── chunk.py                  #   청킹 설정 3종 + 청크 메타데이터  ✅
 │   ├── embed.py                  #   임베딩 (text-embedding-3-small) + 캐시  ✅
-│   └── load.py                   #   Chroma 적재 + 적재 검증  ✅
+│   ├── load.py                   #   Chroma 적재 + 적재 검증  ✅
+│   └── bm25.py                   #   BM25 키워드 인덱스 (하이브리드 검색용)  ✅
 ├── store/                        # ③ 저장 계층 (chroma/ 벡터·청크·메타데이터, docs.db 원문)  ✅
 ├── rag/                          # ④ 체인 — 챗봇·평가 하네스가 같은 rag.chain.ask() 호출
-│   ├── retriever.py              #   Chroma 읽기 전용 검색 + 문서 단위 정리 + 원문 조회(docs.db)  ✅
+│   ├── retriever.py              #   검색: 벡터(Chroma) + BM25 + 질문 연도 → RRF 결합, 문서 단위 정리, 원문 조회  ✅
+│   ├── bm25.py                   #   BM25 읽기 전용 검색 + 공용 토크나이저  ✅
 │   ├── prompts.py                #   시스템 프롬프트 (근거 번호 인용, 출처별 구분, 거절 규칙)  ✅
 │   └── chain.py                  #   LangChain 체인 (ChatOpenAI, 기본 gpt-5.4-mini)  ✅
 ├── eval/                         # 평가 하네스
@@ -78,7 +80,11 @@ project3/
 │   ├── eval_set.jsonl            #   평가셋 (사실·비교·시점·종합·답변 불가)  ✅
 │   ├── retrieval_eval.py         #   검색 평가 Hit@k · MRR  ✅
 │   └── kb_coverage.py            #   대표 질문별 근거 커버리지 (부족 자료 탐색)  ✅
-├── app/                          # ④ 챗봇 UI (조회 전용)
+├── app/                          # ④ 챗봇 UI (Streamlit, 조회 전용 — rag/만 호출)
+│   ├── main.py                   #   진입점: 사이드바 필터(출처·연도·주제·근거 수) + 검색/대화 탭  ✅
+│   ├── search_ui.py              #   검색 탭: 상위 문서·청크·유사도·메타데이터, 원문 보기(docs.db)  ✅
+│   ├── chat.py                   #   대화 탭: rag.chain.ask + 근거 목록, 후속 질문은 검색용 질문으로 재작성  ✅
+│   └── dashboard.py              #   (예정) 평가 결과 시각화
 ├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing · evaluation)
 └── report/
 ```
@@ -365,6 +371,11 @@ python -m indexer verify-load
 ```
 
 ```bash
+# 하이브리드 검색용 BM25 인덱스 (structure → store/bm25/structure.npz, 약 30초)
+python -m indexer bm25
+```
+
+```bash
 # 평가: 대표 질문 근거 커버리지, 청킹 설정별 Hit@k·MRR
 python -m eval.kb_coverage
 ```
@@ -381,6 +392,16 @@ python -m eval.run_eval
 ```bash
 # 일부 문항만, 채점 생략
 python -m eval.run_eval --ids F01 U01 --no-judge
+```
+
+```bash
+# 청킹 설정 비교 (먼저 python -m indexer load --configs fixed structure_notitle)
+python -m eval.run_eval --chunk-config fixed
+```
+
+```bash
+# ④ 챗봇 UI — store/chroma/ 와 store/docs.db 만 있으면 인덱서 없이 구동 (http://localhost:8501)
+streamlit run app/main.py
 ```
 
 옵션: `--src <파일|디렉터리>`, `--db store/docs.db`, `--since 2023-01-01`, `--until 2026-06-30`

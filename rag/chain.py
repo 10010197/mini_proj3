@@ -1,6 +1,7 @@
 """④ 챗봇 계층 — RAG 체인 (LangChain). **챗봇(app/)과 평가 하네스(eval/run_eval.py)가 모두 ask()를 호출한다.**
 
-    질문 ─▶ retriever.search (Chroma 조회, 문서 단위 정리) ─▶ 근거 블록 ─▶ ChatPromptTemplate ─▶ ChatOpenAI ─▶ 답변
+    질문 ─▶ (대화 맥락이 있으면) 검색용 독립 질문으로 재작성 ─▶ retriever.search (Chroma 조회, 문서 단위 정리)
+         ─▶ 근거 블록 ─▶ ChatPromptTemplate(+이전 대화) ─▶ ChatOpenAI ─▶ 답변
 
 반환: {"answer", "refused", "sources"(근거 번호별 출처), "hits"(청크), "usage", "latency_s", "model"}
 
@@ -17,7 +18,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 
 from rag import retriever
-from rag.prompts import HUMAN, REFUSAL_MARK, SYSTEM, format_context, numbered_sources
+from rag.prompts import CONDENSE_SYSTEM, HUMAN, REFUSAL_MARK, SYSTEM, format_context, numbered_sources
 
 CHAT_MODEL = retriever.ENV.get("CHAT_MODEL") or "gpt-5.4-mini"
 CITE = re.compile(r"\[(\d{1,2})\]")
@@ -44,9 +45,20 @@ def build_chain(model: str = CHAT_MODEL):
         | llm(model)
     )
     return (
-        RunnablePassthrough.assign(hits=RunnableLambda(lambda x: retriever.search(x["question"], **x.get("search", {}))))
+        RunnablePassthrough.assign(search_query=RunnableLambda(lambda x: condense(x["question"], x.get("history"), model)))
+        .assign(hits=RunnableLambda(lambda x: retriever.search(x["search_query"], **x.get("search", {}))))
         .assign(message=generate)
     )
+
+
+def condense(question: str, history: list | None, model: str = CHAT_MODEL) -> str:
+    """후속 질문 → 검색용 독립 질문. 대화 맥락이 없으면(평가 하네스 포함) LLM을 부르지 않고 그대로 쓴다."""
+    if not history:
+        return question
+    msgs = [("system", CONDENSE_SYSTEM), *history, ("human", f"[후속 질문]\n{question}")]
+    out = llm(model).invoke(msgs)
+    text = (out.text if isinstance(out.text, str) else str(out.content)).strip()
+    return text or question
 
 
 def _history_messages(history: list[tuple[str, str]] | None) -> list:
@@ -67,6 +79,7 @@ def ask(question: str, history: list[tuple[str, str]] | None = None, model: str 
     cited = sorted({int(n) for n in CITE.findall(answer)} & {s["n"] for s in sources})
     return {
         "question": question,
+        "search_query": out["search_query"],
         "answer": answer.strip(),
         "refused": answer.strip().startswith(REFUSAL_MARK),
         "sources": sources,

@@ -12,3 +12,4 @@ langchain-core>=1.0
 langchain-openai>=1.0
 langchain-chroma>=1.0
 pydantic>=2
+streamlit>=1.40
