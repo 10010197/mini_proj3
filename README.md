@@ -73,6 +73,7 @@ project3/
 ├── rag/                          # ④ 체인 — 챗봇·평가 하네스가 같은 rag.chain.ask() 호출
 │   ├── retriever.py              #   검색: 벡터(Chroma) + BM25 + 질문 연도 → RRF 결합, 문서 단위 정리, 원문 조회  ✅
 │   ├── bm25.py                   #   BM25 읽기 전용 검색 + 공용 토크나이저  ✅
+│   ├── rerank.py                 #   LLM 재정렬 (검색 방식 hybrid_rerank)  ✅
 │   ├── prompts.py                #   시스템 프롬프트 (근거 번호 인용, 출처별 구분, 거절 규칙)  ✅
 │   └── chain.py                  #   LangChain 체인 (ChatOpenAI, 기본 gpt-5.4-mini)  ✅
 ├── eval/                         # 평가 하네스
@@ -397,6 +398,11 @@ python -m eval.run_eval --ids F01 U01 --no-judge
 ```bash
 # 청킹 설정 비교 (먼저 python -m indexer load --configs fixed structure_notitle)
 python -m eval.run_eval --chunk-config fixed
+```
+
+```bash
+# 검색 방식 비교: dense | hybrid | hybrid_time(기본) | hybrid_rerank(+LLM 재정렬)
+python -m eval.run_eval --retrieval hybrid_rerank
 ```
 
 ```bash

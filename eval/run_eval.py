@@ -40,7 +40,6 @@ from pydantic import BaseModel, Field
 from eval.retrieval_eval import EVAL_SET, OUT_DIR, ROOT, correction_aliases, event_siblings, load_eval
 from indexer.chunk import CONFIGS
 from rag import chain, retriever
-from rag.prompts import format_context
 
 JUDGE_MODEL = retriever.ENV.get("JUDGE_MODEL") or "gpt-5.4"
 TYPES = ("fact", "comparison", "temporal", "synthesis", "unanswerable")
@@ -129,9 +128,8 @@ def run_item(item: dict, accept: set[str], chat_model: str, judge_model: str | N
         row.update(correct=0.0, judge={"correctness": "wrong", "grounded": None, "conflict_handled": None,
                                        "reason": "답변 가능 문항을 거절"})
     elif judge_model:
-        hits = retriever.search(item["q"])     # 체인이 받은 근거와 같은 검색(결정적)
-        try:
-            v = judge(item, res, format_context(hits), judge_model)
+        try:       # 체인이 실제로 받은 근거로 채점한다 (재검색하면 LLM 재정렬처럼 비결정적인 검색에서 근거가 달라진다)
+            v = judge(item, res, res["context"], judge_model)
             row.update(judge=v, correct=CORRECT[v["correctness"]], grounded=GROUNDED[v["grounded"]])
         except Exception as e:
             row["judge_error"] = f"{type(e).__name__}: {e}"
@@ -224,7 +222,7 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--chunk-config", choices=CONFIGS, default=None,
                     help="검색할 컬렉션의 청킹 설정 (기본: 챗봇과 같은 structure). 먼저 `python -m indexer load --configs ...`")
     ap.add_argument("--retrieval", choices=retriever.MODES, default=None,
-                    help="검색 방식 (기본: RETRIEVAL_MODE). dense · hybrid(+BM25) · hybrid_time(+질문 연도)")
+                    help="검색 방식 (기본: RETRIEVAL_MODE). dense · hybrid(+BM25) · hybrid_time(+질문 연도) · hybrid_rerank(+LLM 재정렬)")
     ap.add_argument("--tag", help="결과 파일 이름 (기본: {청킹 설정}__{검색 방식}__{생성 모델}, 부분 실행이면 _partial)")
     args = ap.parse_args(argv)
     for stream in (sys.stdout, sys.stderr):

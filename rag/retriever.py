@@ -7,6 +7,7 @@
 - 원문 전체는 벡터 DB에 없다. 사용자가 원문을 요청하면 get_document(doc_id)로 store/docs.db를 조회한다.
 - 검색 방식(RETRIEVAL_MODE): dense(벡터) · hybrid(벡터 + BM25, RRF 결합) · hybrid_time(+질문 연도로 거른 벡터 검색).
   BM25 인덱스(store/bm25/)도 인덱서가 만들고 여기서는 읽기만 한다(rag/bm25.py). 비교 결과: docs/evaluation.md §6.
+  hybrid_rerank: hybrid_time 후보를 넓게 모아 LLM이 재정렬한다(rag/rerank.py). 비교 결과: docs/evaluation.md §7.
 
 설정(.env, 선택): EMBED_MODEL, CHUNK_CONFIG, RETRIEVAL_MODE — 기본값은 인덱서와 같다.
 """
@@ -32,7 +33,7 @@ CHUNK_CONFIG = ENV.get("CHUNK_CONFIG") or "structure"
 COLLECTION = f"{CHUNK_CONFIG}__{EMBED_MODEL}"
 
 
-MODES = ("dense", "hybrid", "hybrid_time")
+MODES = ("dense", "hybrid", "hybrid_time", "hybrid_rerank")   # hybrid_rerank = hybrid_time 후보 + LLM 재정렬 (rag/rerank.py)
 RETRIEVAL_MODE = os.environ.get("RETRIEVAL_MODE") or ENV.get("RETRIEVAL_MODE") or "hybrid_time"   # 근거: docs/evaluation.md §6
 RRF_K = 60                # Reciprocal Rank Fusion 상수
 
@@ -51,6 +52,8 @@ def configure(chunk_config: str | None = None, embed_model: str | None = None, m
 POOL = 40                 # 1차로 가져오는 청크 수 (목록마다)
 K_DOCS = 6                # 답변 근거로 넘기는 문서 수
 MAX_CHUNKS_PER_DOC = 2    # 문서당 청크 상한
+RERANK_DOCS = 15          # hybrid_rerank: 재정렬 대상으로 모으는 문서 수 (여기서 K_DOCS개를 고른다)
+RERANK_POOL = 80          # hybrid_rerank: 1차 청크 후보 수 (목록마다)
 
 
 @dataclass
@@ -175,12 +178,21 @@ def search(query: str, k_docs: int = K_DOCS, max_chunks_per_doc: int = MAX_CHUNK
     반환 순서: 문서 순위(그 문서의 최고 순위 청크 기준) → 문서 안에서는 순위순.
     mode: dense(벡터만) · hybrid(벡터+BM25, RRF) · hybrid_time(+질문 연도로 거른 벡터 검색). 기본은 RETRIEVAL_MODE.
     where: Chroma 메타데이터 조건(build_where), topic: 하위 주제 태그 후처리 필터(이때는 pool을 3배로 넓힌다).
-    청크가 많은 긴 문서(예: 정책 붙임의 의약품 목록)가 pool을 채워 문서가 k_docs개보다 적게 모이면 pool을 5배로 한 번 더 조회한다."""
+    청크가 많은 긴 문서(예: 정책 붙임의 의약품 목록)가 pool을 채워 문서가 k_docs개보다 적게 모이면 pool을 5배로 한 번 더 조회한다.
+    hybrid_rerank: hybrid_time 후보에서 문서 RERANK_DOCS개를 모아 LLM으로 재정렬한 뒤 k_docs개를 고른다."""
     mode = mode or RETRIEVAL_MODE
-    k = pool * 3 if topic else pool
-    hits = _group(candidates(query, k, where, mode), k_docs, max_chunks_per_doc, topic)
+    rerank = mode == "hybrid_rerank"
+    base = "hybrid_time" if rerank else mode
+    n_docs = max(RERANK_DOCS, k_docs) if rerank else k_docs
+    k = max(pool, RERANK_POOL) if rerank else pool
+    k = k * 3 if topic else k
+    hits = _group(candidates(query, k, where, base), n_docs, max_chunks_per_doc, topic)
     if len({h.doc_id for h in hits}) < k_docs:
-        hits = _group(candidates(query, k * 5, where, mode), k_docs, max_chunks_per_doc, topic)
+        hits = _group(candidates(query, k * 5, where, base), n_docs, max_chunks_per_doc, topic)
+    if rerank:
+        from rag import rerank as rr
+
+        hits = rr.rerank(query, hits, k_docs)
     return hits
 
 
