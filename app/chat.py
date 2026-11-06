@@ -61,6 +61,9 @@ def _sources(msg: dict, key: str) -> None:
 
 def _show(msg: dict, key: str) -> None:
     with st.chat_message(msg["role"]):
+        if msg.get("empty"):
+            st.info(msg["content"], icon="🔎")
+            return
         if msg.get("refused"):
             st.caption("근거 부족·범위 밖으로 답변을 보류했습니다.")
         st.markdown(_md(msg["content"]))
@@ -77,36 +80,74 @@ def render(filters: dict) -> None:
         st.session_state.messages = []
         st.rerun()
 
+    pending = st.session_state.get("pending")
     box = st.container(height=560)
     with box:
         if not st.session_state.messages:
             st.markdown("**질문 예시**")
             for q in SUGGESTIONS:
                 if st.button(q, key=f"sugg_{q}"):
-                    st.session_state.pending = q
-                    st.rerun()
+                    _submit(q)
         for i, msg in enumerate(st.session_state.messages):
             _show(msg, str(i))
 
-    question = st.chat_input("질문을 입력하세요") or st.session_state.pop("pending", None)
-    if not question:
-        return
-    history = [(m["role"], m["content"]) for m in st.session_state.messages[-2 * HISTORY_TURNS:]]
+    # 답변을 만드는 동안에는 입력창을 잠가 같은 질문을 다시 보내지 않게 한다
+    question = st.chat_input("답변을 작성하는 중입니다…" if pending else "질문을 입력하세요", disabled=bool(pending))
+    if question:
+        _submit(question)
+    if pending:
+        with box:
+            _answer(pending, filters)
+
+
+def _submit(question: str) -> None:
+    """질문을 대화에 올리고 다시 그린다. 답변은 다음 실행에서 만든다(그동안 입력창이 잠긴다)."""
     st.session_state.messages.append({"role": "user", "content": question})
-    with box:
-        _show(st.session_state.messages[-1], "pending")
-        with st.chat_message("assistant"):
-            with st.spinner("근거를 찾고 답변을 쓰는 중…"):
-                try:
-                    res = chain.ask(question, history=history, search_kwargs={
-                        "k_docs": filters["k_docs"], "max_chunks_per_doc": filters["max_chunks_per_doc"],
-                        "where": filters["where"], "topic": filters["topic"]})
-                except Exception as e:
-                    st.error(f"답변 생성 실패: {type(e).__name__}: {e}")
-                    st.session_state.messages.pop()
-                    return
+    st.session_state.pending = question
+    st.rerun()
+
+
+def _empty_notice(filters: dict) -> str:
+    if filters["where"] or filters["topic"]:
+        return ("현재 검색 조건(기간·출처 종류·하위 주제)에 맞는 근거 문서가 없습니다.  \n"
+                "왼쪽 사이드바에서 기간을 넓히거나 출처 종류·주제 필터를 해제한 뒤 다시 질문해 주세요.")
+    return "질문과 관련된 근거 문서를 찾지 못했습니다. 회사명·제품명·제도명을 넣어 다른 표현으로 질문해 주세요."
+
+
+def _answer(question: str, filters: dict) -> None:
+    """검색 진행 상태 → (근거가 있으면) 스트리밍 답변 → 출처. 결과를 대화에 저장하고 다시 그린다."""
+    msgs = st.session_state.messages
+    prior = [m for m in msgs[:-1] if not m.get("empty")]
+    history = [(m["role"], m["content"]) for m in prior[-2 * HISTORY_TURNS:]]
+    search = {"k_docs": filters["k_docs"], "max_chunks_per_doc": filters["max_chunks_per_doc"],
+              "where": filters["where"], "topic": filters["topic"]}
+    with st.chat_message("assistant"):
+        try:
+            with st.status("이전 대화를 반영해 근거 검색 중…" if history else "근거 검색 중…") as status:
+                state = chain.retrieve(question, history=history, search_kwargs=search)
+                n_docs = len({h.doc_id for h in state["hits"]})
+                if state["search_query"] != question:
+                    st.caption(f"검색 질의: {state['search_query']}")
+                if not n_docs:
+                    status.update(label="근거 문서 없음", state="complete")
+                else:
+                    status.update(label=f"근거 문서 {n_docs}건 찾음 · 답변 작성 중…")
+            res = None
+            if n_docs:
+                st.write_stream(_md(t) for t in chain.stream_answer(state))
+                res = chain.finalize(state)
+                status.update(label=f"근거 문서 {n_docs}건 · 답변 완료 ({res['latency_s']}초)", state="complete")
+        except Exception as e:
+            st.session_state.pop("pending", None)
+            msgs.pop()
+            st.error(f"답변 생성 실패: {type(e).__name__}: {e}")
+            return
+    st.session_state.pop("pending", None)
+    if res is None:            # 빈 결과: 오류가 아니라 안내 메시지 (LLM을 부르지 않는다)
+        msgs.append({"role": "assistant", "content": _empty_notice(filters), "empty": True})
+        st.rerun()
     tokens = res["usage"].get("total_tokens", 0)
-    st.session_state.messages.append({
+    msgs.append({
         "role": "assistant", "content": res["answer"], "refused": res["refused"],
         "sources": res["sources"], "cited": res["cited"],
         "meta": (f"검색 질의: {res['search_query']}  \n" if res["search_query"] != question else "")

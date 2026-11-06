@@ -84,7 +84,7 @@ project3/
 ├── app/                          # ④ 챗봇 UI (Streamlit, 조회 전용 — rag/만 호출)
 │   ├── main.py                   #   진입점: 사이드바 필터(출처·연도·주제·근거 수) + 검색/대화 탭  ✅
 │   ├── search_ui.py              #   검색 탭: 상위 문서·청크·유사도·메타데이터, 원문 보기(docs.db)  ✅
-│   ├── chat.py                   #   대화 탭: rag.chain.ask + 근거 목록, 후속 질문은 검색용 질문으로 재작성  ✅
+│   ├── chat.py                   #   대화 탭: 검색 진행 표시 → 스트리밍 답변 + 출처·원문 일부, 멀티턴(후속 질문 재작성), 빈 결과 안내  ✅
 │   └── dashboard.py              #   (예정) 평가 결과 시각화
 ├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing · evaluation)
 └── report/
