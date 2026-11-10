@@ -80,13 +80,14 @@ project3/
 │   ├── run_eval.py               #   평가셋 전체를 rag.chain.ask로 실행 → 검색·인용·거절·정확도·충실도  ✅
 │   ├── eval_set.jsonl            #   평가셋 (사실·비교·시점·종합·답변 불가)  ✅
 │   ├── retrieval_eval.py         #   검색 평가 Hit@k · MRR  ✅
+│   ├── check_layers.py           #   계층 분리 검증: 정적(import·쓰기 호출) + 실제 앱 구동 중 쓰기 차단  ✅
 │   └── kb_coverage.py            #   대표 질문별 근거 커버리지 (부족 자료 탐색)  ✅
 ├── app/                          # ④ 챗봇 UI (Streamlit, 조회 전용 — rag/만 호출)
-│   ├── main.py                   #   진입점: 사이드바 필터(출처·연도·주제·근거 수) + 검색/대화 탭  ✅
+│   ├── main.py                   #   진입점: 사이드바 필터(출처·연도·주제·근거 수) + 검색/대화/성능 분석 탭  ✅
 │   ├── search_ui.py              #   검색 탭: 상위 문서·청크·유사도·메타데이터, 원문 보기(docs.db)  ✅
 │   ├── chat.py                   #   대화 탭: 검색 진행 표시 → 스트리밍 답변 + 출처·원문 일부, 멀티턴(후속 질문 재작성), 빈 결과 안내  ✅
-│   └── dashboard.py              #   (예정) 평가 결과 시각화
-├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing · evaluation)
+│   └── dashboard.py              #   성능 분석 탭: 설정별 Hit@k·MRR, 유형별 정확도, 유사도 분포, KB 구성, 응답시간  ✅
+├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing · evaluation · failure_analysis)
 └── report/
 ```
 
@@ -406,7 +407,14 @@ python -m eval.run_eval --retrieval hybrid_rerank
 ```
 
 ```bash
+# 계층 분리 검증: 정적 검사 + 실제 앱 구동(검색·대화·성능 분석) 중 수집기·인덱서 import와 저장소 쓰기 차단 → eval/results/layer_check.json
+# 결과·실패 분석·한계: docs/failure_analysis.md
+python -m eval.check_layers
+```
+
+```bash
 # ④ 챗봇 UI — store/chroma/ 와 store/docs.db 만 있으면 인덱서 없이 구동 (http://localhost:8501)
+# 탭: 검색 · 대화 · 성능 분석(eval/results/ 평가 결과와 docs.db만 읽음, 해석은 docs/evaluation.md §9)
 streamlit run app/main.py
 ```
 

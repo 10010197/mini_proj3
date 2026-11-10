@@ -4,7 +4,8 @@
 
 - 조회 전용: rag.retriever.search(검색)와 rag.chain.ask(대화)만 호출한다.
   문서 임베딩 생성·크롤링·인덱스 쓰기는 하지 않는다. 인덱서 없이 store/chroma/와 store/docs.db만 있으면 구동된다.
-- 사이드바 필터(출처 종류·기간·하위 주제·근거 문서 수)는 두 탭에 똑같이 적용된다.
+- 사이드바 필터(출처 종류·기간·하위 주제·근거 문서 수)는 검색·대화 탭에 똑같이 적용된다.
+  성능 분석 탭은 평가 결과(eval/results/)와 docs.db만 읽으며 필터를 적용하지 않는다.
 """
 from __future__ import annotations
 

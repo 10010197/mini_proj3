@@ -143,7 +143,7 @@ def chart_settings(summ: pd.DataFrame) -> None:
     chart = (bars + labels).properties(width=alt.Step(26), height=260).facet(
         column=alt.Column("지표:N", sort=metrics, header=alt.Header(title=None, labelFontSize=13)),
     ).resolve_scale(x="independent")
-    st.altair_chart(chart, use_container_width=False)
+    st.altair_chart(chart, width="content")
 
     # 기준선 대비 표
     tbl = sub.set_index("실험").loc[order, metrics + ["과잉 거절", "거절 정확도", "지연 중앙값(초)"]]
@@ -153,7 +153,7 @@ def chart_settings(summ: pd.DataFrame) -> None:
         for m in metrics:
             show[m] = [f"{v:.3f} ({d:+.1f}%p)" if n != BASELINE else f"{v:.3f}"
                        for n, v, d in zip(tbl.index, tbl[m], delta[m])]
-        st.dataframe(show, use_container_width=True)
+        st.dataframe(show, width="stretch")
     best = sub.set_index("실험")["Hit@3"].idxmax()
     if base_vals is not None and "Hit@3" in summ:
         b = summ.set_index("실험")
@@ -194,7 +194,7 @@ def chart_types(by_type: pd.DataFrame, items: pd.DataFrame) -> None:
         color=alt.condition(f"datum['{metric}'] > 0.55", alt.value("white"), alt.value("#0b0b0b")),
     )
     left, right = st.columns([3, 2])
-    left.altair_chart((heat + text).properties(height=34 * len(present) + 30), use_container_width=True)
+    left.altair_chart((heat + text).properties(height=34 * len(present) + 30), width="stretch")
 
     # 선택 설정의 채점 분포 (유형별 누적)
     it = items[(items["실험"] == exp) & items["답변 가능"]]
@@ -208,7 +208,7 @@ def chart_types(by_type: pd.DataFrame, items: pd.DataFrame) -> None:
         tooltip=["유형", "채점", "문항"],
     ).transform_calculate(rank=f"indexof({json.dumps(GRADE_ORDER)}, datum['채점'])")
     right.markdown(f"**{exp}** · 채점 분포")
-    right.altair_chart(stack.properties(height=alt.Step(40)), use_container_width=True)
+    right.altair_chart(stack.properties(height=alt.Step(40)), width="stretch")
 
     # 취약 유형 진단 (자동 문장)
     tp = by_type[(by_type["실험"] == exp) & by_type["유형"].isin(TYPE_ORDER)].set_index("유형")
@@ -237,7 +237,7 @@ def chart_types(by_type: pd.DataFrame, items: pd.DataFrame) -> None:
         fails = allit[allit["유형"].isin(t_sel) & (allit["채점"].isin(g_sel) |
                                                    ((allit["유형"] == "답변 불가") & (allit["정확도"] < 1)))]
         st.dataframe(fails[["id", "유형", "채점", "정답 순위", "최고 유사도", "질문", "정답 기준", "채점 이유"]],
-                     use_container_width=True, hide_index=True,
+                     width="stretch", hide_index=True,
                      column_config={"정답 순위": st.column_config.NumberColumn(help="비어 있으면 정답 문서가 상위 6개 밖"),
                                     "최고 유사도": st.column_config.NumberColumn(format="%.3f")})
         pick = st.selectbox("답변 원문 보기", fails["id"].tolist(), key="dash_fail_pick") if len(fails) else None
@@ -283,7 +283,7 @@ def chart_scores(items: pd.DataFrame) -> None:
         row=alt.Row("그룹:N", sort=groups, header=alt.Header(title=None, labelAngle=0, labelAlign="left", labelFontSize=12)),
     )
     left, right = st.columns([3, 2])
-    left.altair_chart(chart, use_container_width=False)
+    left.altair_chart(chart, width="content")
 
     ans, una = it[it["답변 가능"]], it[~it["답변 가능"]]
     blocked_una = (una[which] < thr).sum()
@@ -295,7 +295,7 @@ def chart_scores(items: pd.DataFrame) -> None:
                  help="그중 correct·partial이던 문항은 정확도 손실, 정답 문서를 못 찾은 문항은 오히려 안전한 거절")
     right.caption(f"잘못 차단된 {blocked_ans}건 중 correct·partial {blocked_good}건 · 정답 문서 못 찾음 {blocked_miss}건")
     med = it.groupby("그룹")[which].median().reindex(groups)
-    right.dataframe(med.rename("중앙값").to_frame().style.format("{:.3f}"), use_container_width=True)
+    right.dataframe(med.rename("중앙값").to_frame().style.format("{:.3f}"), width="stretch")
     st.markdown(
         f"- 점수 범위 {lo:.3f} ~ {hi:.3f}. 그룹 간 중앙값 차이가 작고 분포가 크게 겹친다. "
         "text-embedding-3-small의 코사인 유사도는 같은 도메인(바이오·헬스케어) 안에서 0.4~0.7에 몰려, "
@@ -330,7 +330,7 @@ def chart_kb() -> None:
         order=alt.Order("ord:Q"),
         tooltip=[grain, "출처", "문서"],
     ).transform_calculate(ord=f"indexof({json.dumps(src_dom, ensure_ascii=False)}, datum['출처'])")
-    st.altair_chart(bars.properties(height=280), use_container_width=True)
+    st.altair_chart(bars.properties(height=280), width="stretch")
 
     left, right = st.columns(2)
     sel = df.groupby("출처").agg(수집=("in_kb", "size"), 지식베이스=("in_kb", "sum")).reindex(src_dom).reset_index()
@@ -344,7 +344,7 @@ def chart_kb() -> None:
         color=alt.Color("단계:N", scale=alt.Scale(domain=["수집", "지식베이스"], range=["#b7d3f6", "#256abf"]),
                         legend=alt.Legend(title=None, orient="bottom")),
         tooltip=["출처", "단계", "문서", alt.Tooltip("선별 비율:Q", format=".0%")],
-    ).properties(height=260), use_container_width=True)
+    ).properties(height=260), width="stretch")
 
     kb = df[df["in_kb"] == 1]
     topics = kb["topics"].dropna().str.split("; ").explode().str.strip()
@@ -353,7 +353,7 @@ def chart_kb() -> None:
     right.altair_chart(alt.Chart(tp).mark_bar(color="#2a78d6", cornerRadiusTopRight=4, cornerRadiusBottomRight=4).encode(
         y=alt.Y("하위 주제:N", sort="-x", title=None), x=alt.X("문서:Q", title=None),
         tooltip=["하위 주제", "문서"],
-    ).properties(height=260), use_container_width=True)
+    ).properties(height=260), width="stretch")
 
     n = len(kb)
     by_src = kb["출처"].value_counts()
@@ -392,11 +392,11 @@ def chart_latency(items: pd.DataFrame, summ: pd.DataFrame) -> None:
         color=alt.Color("실험:N", scale=EXP_SCALE, legend=None),
         tooltip=["실험", "id", "유형", alt.Tooltip("지연(초):Q", format=".2f")],
     ).transform_calculate(jit="random() * 16 - 8")
-    st.altair_chart((box + dots).properties(height=60 * len(order)), use_container_width=True)
+    st.altair_chart((box + dots).properties(height=60 * len(order)), width="stretch")
     s = summ.set_index("실험").loc[order, ["지연 중앙값(초)", "입력 토큰/문항", "Hit@3", "정확도"]]
     p90 = it.groupby("실험")["지연(초)"].quantile(0.9).reindex(order).round(2)
     s.insert(1, "지연 p90(초)", p90)
-    st.dataframe(s, use_container_width=True)
+    st.dataframe(s, width="stretch")
     st.markdown(
         "- 재정렬(hybrid_rerank)은 LLM 호출이 1회 늘어 지연 중앙값이 약 2.1초 → 3.5초(+1.4초)다. "
         "재정렬 호출의 입력(문항당 약 1.1만 토큰)은 위 토큰 집계에 포함되지 않는다.\n"
@@ -434,4 +434,4 @@ def render() -> None:
     else:
         chart_latency(items, summ)
     with st.expander("실험 설정·결과 파일"):
-        st.dataframe(summ[["실험", "설명", "컬렉션", "검색", "파일"]], use_container_width=True, hide_index=True)
+        st.dataframe(summ[["실험", "설명", "컬렉션", "검색", "파일"]], width="stretch", hide_index=True)
