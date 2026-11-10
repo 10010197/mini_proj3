@@ -46,7 +46,7 @@
 
 ```
 project3/
-├── README.md                     # 개요, 실행 순서, 스크린샷
+├── README.md                     # 개요, 실행 순서 (최종 리포트: report/report.md)
 ├── .env.example                  # 키 이름만 포함
 ├── requirements.txt
 ├── data/provided/                # 제공 CSV 원본 (git 제외)
@@ -66,13 +66,14 @@ project3/
 │   ├── parse.py                  #   문서 종류별 섹션 분할·정제  ✅
 │   ├── dedup.py                  #   청크 단위 중복 처리  ✅
 │   ├── chunk.py                  #   청킹 설정 3종 + 청크 메타데이터  ✅
-│   ├── embed.py                  #   임베딩 (text-embedding-3-small) + 캐시  ✅
+│   ├── embed.py                  #   임베딩 (text-embedding-3-large, 2026-11-10 3-small에서 교체) + 캐시  ✅
 │   ├── load.py                   #   Chroma 적재 + 적재 검증  ✅
 │   └── bm25.py                   #   BM25 키워드 인덱스 (하이브리드 검색용)  ✅
 ├── store/                        # ③ 저장 계층 (chroma/ 벡터·청크·메타데이터, docs.db 원문)  ✅
 ├── rag/                          # ④ 체인 — 챗봇·평가 하네스가 같은 rag.chain.ask() 호출
 │   ├── retriever.py              #   검색: 벡터(Chroma) + BM25 + 질문 연도 → RRF 결합, 문서 단위 정리, 원문 조회  ✅
 │   ├── bm25.py                   #   BM25 읽기 전용 검색 + 공용 토크나이저  ✅
+│   ├── reliability.py            #   답변별 신뢰성 판단 근거: 원자료 수치 + 평가로 검증된 주의 표시  ✅
 │   ├── rerank.py                 #   LLM 재정렬 (검색 방식 hybrid_rerank)  ✅
 │   ├── prompts.py                #   시스템 프롬프트 (근거 번호 인용, 출처별 구분, 거절 규칙)  ✅
 │   └── chain.py                  #   LangChain 체인 (ChatOpenAI, 기본 gpt-5.4-mini)  ✅
@@ -81,14 +82,24 @@ project3/
 │   ├── eval_set.jsonl            #   평가셋 (사실·비교·시점·종합·답변 불가)  ✅
 │   ├── retrieval_eval.py         #   검색 평가 Hit@k · MRR  ✅
 │   ├── check_layers.py           #   계층 분리 검증: 정적(import·쓰기 호출) + 실제 앱 구동 중 쓰기 차단  ✅
+│   ├── diagnose_failures.py      #   실패 문항별 원인 계층 판정 (데이터·전처리·인덱싱·검색·생성)  ✅
+│   ├── sweep_retrieval.py        #   검색 단일 변수 스윕 (생성 없이 순위만, 예: pool)  ✅
+│   ├── experiments.json          #   실험 기록: 태그마다 부모·계층·바꾼 변수 하나·결정  ✅
+│   ├── manual_review.py          #   사람 채점: 블라인드 층화 표본 30문항 → LLM 채점 일치율·κ  ✅
+│   ├── check_submission.py       #   제출 전 점검 27항목을 수치로 판정 (docs/submission_checklist.md)  ✅
+│   ├── reliability_eval.py       #   신뢰성 주의 표시 검증: 표시 유무별 정확도 (LLM·사람 채점)  ✅
+│   ├── embedding_comparison.py   #   임베딩 모델(3-small·3-large) × 차원 검색 비교  ✅
 │   └── kb_coverage.py            #   대표 질문별 근거 커버리지 (부족 자료 탐색)  ✅
 ├── app/                          # ④ 챗봇 UI (Streamlit, 조회 전용 — rag/만 호출)
 │   ├── main.py                   #   진입점: 사이드바 필터(출처·연도·주제·근거 수) + 검색/대화/성능 분석 탭  ✅
 │   ├── search_ui.py              #   검색 탭: 상위 문서·청크·유사도·메타데이터, 원문 보기(docs.db)  ✅
-│   ├── chat.py                   #   대화 탭: 검색 진행 표시 → 스트리밍 답변 + 출처·원문 일부, 멀티턴(후속 질문 재작성), 빈 결과 안내  ✅
+│   ├── chat.py                   #   대화 탭: 검색 진행 표시 → 스트리밍 답변 + 신뢰성 판단 근거(수치) + 출처·원문 일부, 멀티턴, 빈 결과 안내  ✅
 │   └── dashboard.py              #   성능 분석 탭: 설정별 Hit@k·MRR, 유형별 정확도, 유사도 분포, KB 구성, 응답시간  ✅
-├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing · evaluation · failure_analysis)
-└── report/
+├── docs/                         # 설계·근거 문서 (data_and_use_cases · kb_composition · indexing · evaluation · failure_analysis · submission_checklist)
+└── report/                       # 최종 리포트
+    ├── report.md                 #   10개 절: 시스템 정의 ~ 심화 확장, 부록(재현 명령·설계 판단 근거)  ✅
+    ├── make_figures.py           #   리포트 그림 생성 (eval/results·docs.db → figures/*.png)  ✅
+    └── figures/                  #   그림 8종  ✅
 ```
 
 ## 3. 제공 데이터
@@ -404,6 +415,31 @@ python -m eval.run_eval --chunk-config fixed
 ```bash
 # 검색 방식 비교: dense | hybrid | hybrid_time(기본) | hybrid_rerank(+LLM 재정렬)
 python -m eval.run_eval --retrieval hybrid_rerank
+```
+
+```bash
+# 제출 전 점검 27항목 — 항목마다 수치 근거로 판정 (실제 앱 구동 포함) → eval/results/submission_check.json, docs/submission_checklist.md
+python -m eval.check_submission
+```
+
+```bash
+# 사람 채점: 블라인드 검토표 생성(이미 있으면 덮어쓰지 않음) → manual_score 기입 → LLM 채점과 일치율·κ
+python -m eval.manual_review sample
+```
+
+```bash
+python -m eval.manual_review agree
+```
+
+```bash
+# 개선 루프: 측정 → 실패 사례 확인 → 원인 계층 특정 → 단일 변수 변경 → 재측정 (docs/failure_analysis.md §1)
+# 실패 문항별 원인 계층 판정 → eval/results/failure_layers__<태그>.json
+python -m eval.diagnose_failures --tag structure__hybrid_time__gpt-5.4-mini_prompt2
+```
+
+```bash
+# 검색 변수 하나만 바꿔 순위 측정 (생성·채점 없음) → 좋아진 값만 run_eval --tag 로 재측정, eval/experiments.json에 기록
+python -m eval.sweep_retrieval --param pool --values 40 80 160 400
 ```
 
 ```bash

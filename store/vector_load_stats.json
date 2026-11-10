@@ -1117,5 +1117,378 @@
       }
     ],
     "ok": true
+  },
+  "structure__text-embedding-3-large": {
+    "collection": "structure__text-embedding-3-large",
+    "path": "store\\chroma",
+    "checked_at": "2026-11-10T12:25:23",
+    "chunks_in_file": 57433,
+    "chunks_in_db": 57433,
+    "count_after_reopen": 57433,
+    "ids_missing_in_db": 0,
+    "ids_extra_in_db": 0,
+    "docs_in_db": 15355,
+    "docs_in_file": 15355,
+    "by_source_db": {
+      "disclosure": 8294,
+      "news": 31270,
+      "patent": 4268,
+      "policy": 9569,
+      "report": 4032
+    },
+    "by_source_file": {
+      "disclosure": 8294,
+      "news": 31270,
+      "patent": 4268,
+      "policy": 9569,
+      "report": 4032
+    },
+    "empty_documents": 0,
+    "missing_required_meta": {},
+    "vector_dim": 3072,
+    "vector_sample": 200,
+    "vector_mismatch": 0,
+    "sample_search": [
+      {
+        "id": "F01",
+        "type": "fact",
+        "q": "종근당이 2023년 2월 도입한 ADC 플랫폼 기술의 계약 상대방과 총 계약 규모는?",
+        "gold": [
+          "dart:20230203800856"
+        ],
+        "gold_in_top5": true,
+        "top5": [
+          {
+            "rank": 1,
+            "sim": 0.662,
+            "doc_id": "dart:20230203800856",
+            "source_type": "disclosure",
+            "published_at": "2023-02-03",
+            "title": "[종근당] 항체-약물 접합체(Antibody-Drug Conjugate, ADC) 플랫폼 기술 도입 계약 체결",
+            "section": "본문"
+          },
+          {
+            "rank": 2,
+            "sim": 0.662,
+            "doc_id": "dart:20230217800631",
+            "source_type": "disclosure",
+            "published_at": "2023-02-17",
+            "title": "[종근당] [정정] 항체-약물 접합체(Antibody-Drug Conjugate, ADC) 플랫폼 기술 도입 계약 체결",
+            "section": "본문"
+          },
+          {
+            "rank": 3,
+            "sim": 0.653,
+            "doc_id": "dart:20260318001376",
+            "source_type": "disclosure",
+            "published_at": "2026-03-18",
+            "title": "[종근당] 사업보고서 (2025.12)",
+            "section": "II. 사업의 내용 > 6. 주요계약 및 연구개발활동 > 나. 라이센스인"
+          },
+          {
+            "rank": 4,
+            "sim": 0.647,
+            "doc_id": "dart:20250325000403",
+            "source_type": "disclosure",
+            "published_at": "2025-03-25",
+            "title": "[종근당] [정정] 사업보고서 (2024.12)",
+            "section": "II. 사업의 내용 > 6. 주요계약 및 연구개발활동 > 나. 라이센스인"
+          },
+          {
+            "rank": 5,
+            "sim": 0.613,
+            "doc_id": "dart:20230217800631",
+            "source_type": "disclosure",
+            "published_at": "2023-02-17",
+            "title": "[종근당] [정정] 항체-약물 접합체(Antibody-Drug Conjugate, ADC) 플랫폼 기술 도입 계약 체결",
+            "section": "본문"
+          }
+        ]
+      },
+      {
+        "id": "F13",
+        "type": "fact",
+        "q": "삼성바이오로직스가 2025년 1월 처음 제시한 2025년 매출 전망치는?",
+        "gold": [
+          "dart:20250122800365"
+        ],
+        "gold_in_top5": true,
+        "top5": [
+          {
+            "rank": 1,
+            "sim": 0.746,
+            "doc_id": "dart:20250122800365",
+            "source_type": "disclosure",
+            "published_at": "2025-01-22",
+            "title": "[삼성바이오로직스] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          },
+          {
+            "rank": 2,
+            "sim": 0.74,
+            "doc_id": "dart:20261021800395",
+            "source_type": "disclosure",
+            "published_at": "2026-10-21",
+            "title": "[삼성바이오로직스] [정정] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          },
+          {
+            "rank": 3,
+            "sim": 0.73,
+            "doc_id": "dart:20260515001658",
+            "source_type": "disclosure",
+            "published_at": "2026-05-15",
+            "title": "[삼성바이오로직스] [정정] 사업보고서 (2025.12)",
+            "section": "II. 사업의 내용 > 1. 사업의 개요 > 다. 신규사업 등의 내용 및"
+          },
+          {
+            "rank": 4,
+            "sim": 0.721,
+            "doc_id": "dart:20260515001658",
+            "source_type": "disclosure",
+            "published_at": "2026-05-15",
+            "title": "[삼성바이오로직스] [정정] 사업보고서 (2025.12)",
+            "section": "II. 사업의 내용 > 7. 기타 참고사항 > 라. 업계의 현황(1) 산"
+          },
+          {
+            "rank": 5,
+            "sim": 0.72,
+            "doc_id": "dart:20240124800314",
+            "source_type": "disclosure",
+            "published_at": "2024-01-24",
+            "title": "[삼성바이오로직스] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          }
+        ]
+      },
+      {
+        "id": "T01",
+        "type": "temporal",
+        "q": "삼성바이오로직스의 2024년 매출 전망은 연중 어떻게 바뀌었나?",
+        "gold": [
+          "dart:20240124800314",
+          "dart:20241023800279"
+        ],
+        "gold_in_top5": true,
+        "top5": [
+          {
+            "rank": 1,
+            "sim": 0.729,
+            "doc_id": "dart:20240124800314",
+            "source_type": "disclosure",
+            "published_at": "2024-01-24",
+            "title": "[삼성바이오로직스] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          },
+          {
+            "rank": 2,
+            "sim": 0.72,
+            "doc_id": "dart:20260515001658",
+            "source_type": "disclosure",
+            "published_at": "2026-05-15",
+            "title": "[삼성바이오로직스] [정정] 사업보고서 (2025.12)",
+            "section": "II. 사업의 내용 > 1. 사업의 개요 > 다. 신규사업 등의 내용 및"
+          },
+          {
+            "rank": 3,
+            "sim": 0.713,
+            "doc_id": "dart:20261021800395",
+            "source_type": "disclosure",
+            "published_at": "2026-10-21",
+            "title": "[삼성바이오로직스] [정정] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          },
+          {
+            "rank": 4,
+            "sim": 0.713,
+            "doc_id": "dart:20250814004283",
+            "source_type": "disclosure",
+            "published_at": "2025-08-14",
+            "title": "[삼성바이오로직스] [정정] 사업보고서 (2024.12)",
+            "section": "II. 사업의 내용 > 4. 매출 및 수주상황 > 가. 매출 실적 > ("
+          },
+          {
+            "rank": 5,
+            "sim": 0.711,
+            "doc_id": "naver:366:0001026471",
+            "source_type": "news",
+            "published_at": "2024-10-23",
+            "title": "삼성바이오로직스 연매출 4조원 돌파 코앞...이재용·존림의 초격차 전략 결실(종합)",
+            "section": "본문"
+          }
+        ]
+      },
+      {
+        "id": "C01",
+        "type": "comparison",
+        "q": "종근당과 에이비엘바이오의 ADC 플랫폼 기술 도입 계약은 상대방과 금액 공개 여부에서 어떻게 다른가?",
+        "gold": [
+          "dart:20230203800856",
+          "dart:20241023900101"
+        ],
+        "gold_in_top5": true,
+        "top5": [
+          {
+            "rank": 1,
+            "sim": 0.695,
+            "doc_id": "dart:20230907900157",
+            "source_type": "disclosure",
+            "published_at": "2023-09-07",
+            "title": "[에이비엘바이오] 신규 항체-약물 결합체(ADC) 연구개발을 위한 기술도입 계약 체결",
+            "section": "본문"
+          },
+          {
+            "rank": 2,
+            "sim": 0.685,
+            "doc_id": "dart:20230217800631",
+            "source_type": "disclosure",
+            "published_at": "2023-02-17",
+            "title": "[종근당] [정정] 항체-약물 접합체(Antibody-Drug Conjugate, ADC) 플랫폼 기술 도입 계약 체결",
+            "section": "본문"
+          },
+          {
+            "rank": 3,
+            "sim": 0.684,
+            "doc_id": "dart:20230203800856",
+            "source_type": "disclosure",
+            "published_at": "2023-02-03",
+            "title": "[종근당] 항체-약물 접합체(Antibody-Drug Conjugate, ADC) 플랫폼 기술 도입 계약 체결",
+            "section": "본문"
+          },
+          {
+            "rank": 4,
+            "sim": 0.671,
+            "doc_id": "dart:20230907900157",
+            "source_type": "disclosure",
+            "published_at": "2023-09-07",
+            "title": "[에이비엘바이오] 신규 항체-약물 결합체(ADC) 연구개발을 위한 기술도입 계약 체결",
+            "section": "본문"
+          },
+          {
+            "rank": 5,
+            "sim": 0.665,
+            "doc_id": "dart:20260312000744",
+            "source_type": "disclosure",
+            "published_at": "2026-03-12",
+            "title": "[에이비엘바이오] 사업보고서 (2025.12)",
+            "section": "II. 사업의 내용 > 6. 주요계약 및 연구개발활동 > 나. 기술도입("
+          }
+        ]
+      },
+      {
+        "id": "S01",
+        "type": "synthesis",
+        "q": "미국 생물보안법이 국내 CDMO에 기회라는 전망은 실제 수주 실적과 맞아떨어졌나?",
+        "gold": [
+          "dart:20241022800030",
+          "naver:008:0004995096",
+          "naver:025:0003395127",
+          "naver:366:0001035846"
+        ],
+        "gold_in_top5": false,
+        "top5": [
+          {
+            "rank": 1,
+            "sim": 0.691,
+            "doc_id": "naver:119:0002908021",
+            "source_type": "news",
+            "published_at": "2024-12-26",
+            "title": "中 빈틈 노렸던 K-바이오...美 생물보안법 불발에 복잡해진 ‘셈법’",
+            "section": "본문"
+          },
+          {
+            "rank": 2,
+            "sim": 0.654,
+            "doc_id": "naver:011:0004365915",
+            "source_type": "news",
+            "published_at": "2024-07-12",
+            "title": "美 생물보안법 수혜 기대에...국내 바이오 CDMO 고공비행",
+            "section": "본문"
+          },
+          {
+            "rank": 3,
+            "sim": 0.647,
+            "doc_id": "naver:025:0003412610",
+            "source_type": "news",
+            "published_at": "2025-01-05",
+            "title": "불발된 美 생물보안법...中 빈틈 노린 K바이오, 복잡해진 셈법",
+            "section": "본문"
+          },
+          {
+            "rank": 4,
+            "sim": 0.647,
+            "doc_id": "naver:119:0003040534",
+            "source_type": "news",
+            "published_at": "2025-12-23",
+            "title": "현지 공장이 신의 한 수?...美 생물보안법 통과에 韓 CDMO 수혜 기대",
+            "section": "본문"
+          },
+          {
+            "rank": 5,
+            "sim": 0.646,
+            "doc_id": "naver:119:0003040534",
+            "source_type": "news",
+            "published_at": "2025-12-23",
+            "title": "현지 공장이 신의 한 수?...美 생물보안법 통과에 韓 CDMO 수혜 기대",
+            "section": "본문"
+          }
+        ]
+      },
+      {
+        "id": "U01",
+        "type": "unanswerable",
+        "q": "삼성바이오로직스의 2028년 매출 전망치는?",
+        "gold": [],
+        "gold_in_top5": null,
+        "top5": [
+          {
+            "rank": 1,
+            "sim": 0.73,
+            "doc_id": "dart:20240124800314",
+            "source_type": "disclosure",
+            "published_at": "2024-01-24",
+            "title": "[삼성바이오로직스] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          },
+          {
+            "rank": 2,
+            "sim": 0.728,
+            "doc_id": "dart:20261021800395",
+            "source_type": "disclosure",
+            "published_at": "2026-10-21",
+            "title": "[삼성바이오로직스] [정정] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          },
+          {
+            "rank": 3,
+            "sim": 0.727,
+            "doc_id": "dart:20230127800496",
+            "source_type": "disclosure",
+            "published_at": "2023-01-27",
+            "title": "[삼성바이오로직스] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          },
+          {
+            "rank": 4,
+            "sim": 0.724,
+            "doc_id": "dart:20260515001658",
+            "source_type": "disclosure",
+            "published_at": "2026-05-15",
+            "title": "[삼성바이오로직스] [정정] 사업보고서 (2025.12)",
+            "section": "II. 사업의 내용 > 1. 사업의 개요 > 다. 신규사업 등의 내용 및"
+          },
+          {
+            "rank": 5,
+            "sim": 0.721,
+            "doc_id": "dart:20260121800501",
+            "source_type": "disclosure",
+            "published_at": "2026-01-21",
+            "title": "[삼성바이오로직스] 연결재무제표기준영업실적등에대한전망(공정공시)",
+            "section": "본문"
+          }
+        ]
+      }
+    ],
+    "ok": true
   }
 }

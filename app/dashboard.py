@@ -27,21 +27,18 @@ ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "eval" / "results"
 DOCS_DB = ROOT / "store" / "docs.db"
 
-# 실험 설정: (표시 이름, 결과 파일 태그, 설명). 색은 실험(개체)에 고정한다 — 선택을 바꿔도 색이 바뀌지 않게.
-BASELINE = "① 기준선 dense"
-EXPERIMENTS = [
-    (BASELINE, "structure__gpt-5.4-mini_run1", "structure 청킹 · 벡터 검색 · 1차 측정 (11-05)"),
-    ("fixed 청킹", "fixed__gpt-5.4-mini", "고정 길이 청킹 · 벡터 검색"),
-    ("머리말 제거", "structure_notitle__gpt-5.4-mini", "structure 청킹에서 제목·발행처·날짜 머리말 제거"),
-    ("hybrid", "structure__hybrid__gpt-5.4-mini", "벡터 + BM25 (RRF)"),
-    ("hybrid_time (이전 프롬프트)", "structure__hybrid_time__gpt-5.4-mini", "hybrid + 질문 연도 목록"),
-    ("hybrid_time ★기본", "structure__hybrid_time__gpt-5.4-mini_prompt2", "현재 기본 · 필수 요건 프롬프트 (11-06)"),
-    ("hybrid_rerank 1회", "structure__hybrid_rerank__gpt-5.4-mini", "hybrid_time 후보 15문서 → LLM 재정렬"),
-    ("hybrid_rerank 2회", "structure__hybrid_rerank__gpt-5.4-mini_run2", "같은 설정 반복 (재정렬은 비결정적)"),
-]
+# 실험 설정은 eval/experiments.json(실험 기록, 실험마다 바꾼 변수 하나)에서 읽는다.
+# (표시 이름, 결과 파일 태그, 설명). 색은 실험(개체)에 고정한다 — 선택을 바꿔도 색이 바뀌지 않게.
+REGISTRY = ROOT / "eval" / "experiments.json"
+_REG = [e for e in json.loads(REGISTRY.read_text(encoding="utf-8"))["experiments"]
+        if e["kind"] == "answer" and e.get("dashboard", True)]
+EXPERIMENTS = [(e["name"], e["tag"], f"[{e['layer'] or '기준'}] {e['change']} — {e['decision']}") for e in _REG]
+BASELINE = EXPERIMENTS[0][0]
+CURRENT = next((e["name"] for e in _REG if e.get("default")), EXPERIMENTS[-1][0])   # 현재 챗봇 기본 설정
 EXP_NAMES = [e[0] for e in EXPERIMENTS]
-# 기준선은 회색, 나머지는 분류 팔레트 순서대로 (dataviz 기본 팔레트, 인접 쌍 CVD 검증된 순서)
-EXP_COLORS = ["#8a8984", "#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6"]
+# 기준선은 회색, 나머지는 분류 팔레트 순서대로 (dataviz 기본 팔레트, 인접 쌍 CVD 검증된 순서). 8개를 넘으면 회색 반복.
+EXP_COLORS = (["#8a8984", "#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#104281"]
+              + ["#b8b7b2"] * max(0, len(EXP_NAMES) - 9))[:len(EXP_NAMES)]
 EXP_SCALE = alt.Scale(domain=EXP_NAMES, range=EXP_COLORS)
 
 TYPE_LABEL = {"fact": "사실", "comparison": "비교", "temporal": "시점", "synthesis": "종합", "unanswerable": "답변 불가"}
@@ -157,10 +154,10 @@ def chart_settings(summ: pd.DataFrame) -> None:
     best = sub.set_index("실험")["Hit@3"].idxmax()
     if base_vals is not None and "Hit@3" in summ:
         b = summ.set_index("실험")
-        cur = "hybrid_time ★기본"
+        cur = CURRENT
         st.markdown(
             f"- 기본 설정 **{cur}**: Hit@3 {b.loc[BASELINE, 'Hit@3']:.3f} → **{b.loc[cur, 'Hit@3']:.3f}**, "
-            f"MRR {b.loc[BASELINE, 'MRR']:.3f} → **{b.loc[cur, 'MRR']:.3f}** (하이브리드 + 질문 연도 목록)\n"
+            f"MRR {b.loc[BASELINE, 'MRR']:.3f} → **{b.loc[cur, 'MRR']:.3f}** (하이브리드 + 질문 연도 목록 + 임베딩 3-large)\n"
             f"- 선택한 설정 중 Hit@3 최고: **{best}** ({sub.set_index('실험').loc[best, 'Hit@3']:.3f}). "
             "재정렬은 사실·시점 문항 순위를 올리지만 종합 문항 근거 충실도가 떨어지고 지연이 +1.4초라 기본값에서 제외했다 "
             "(docs/evaluation.md §7).\n"
@@ -174,7 +171,7 @@ def chart_types(by_type: pd.DataFrame, items: pd.DataFrame) -> None:
     c1, c2 = st.columns([2, 3])
     metric = c1.radio("지표", ["정확도", "Hit@3", "MRR", "근거 충실도"], horizontal=True, key="dash_type_metric")
     exp = c2.selectbox("상세 볼 설정", [n for n in EXP_NAMES if n in set(items["실험"])],
-                       index=EXP_NAMES.index("hybrid_time ★기본"), key="dash_type_exp")
+                       index=EXP_NAMES.index(CURRENT), key="dash_type_exp")
     st.caption("정확도: LLM 채점(correct 1 · partial 0.5 · wrong 0, 거절은 0). 문항 수 사실 36 · 비교 9 · 시점 14 · 종합 9 — "
                "비교·종합은 9문항이라 1문항이 약 0.11에 해당한다.")
 
@@ -253,7 +250,7 @@ def chart_scores(items: pd.DataFrame) -> None:
     st.subheader("3. 유사도 점수 분포 — 임계값 설정 근거")
     c1, c2, c3 = st.columns([2, 2, 2])
     exp = c1.selectbox("설정", [n for n in EXP_NAMES if n in set(items["실험"])],
-                       index=EXP_NAMES.index("hybrid_time ★기본"), key="dash_score_exp")
+                       index=EXP_NAMES.index(CURRENT), key="dash_score_exp")
     grouping = c2.radio("나누는 기준", ["검색 결과", "답변 채점"], horizontal=True, key="dash_score_group")
     which = c3.radio("점수", ["최고 유사도", "1위 유사도"], horizontal=True, key="dash_score_which",
                      help="최고: 근거 6문서 중 가장 높은 코사인 유사도 · 1위: 최종 1위 문서의 유사도(하이브리드는 RRF 순위라 최고와 다를 수 있음)")
@@ -298,7 +295,7 @@ def chart_scores(items: pd.DataFrame) -> None:
     right.dataframe(med.rename("중앙값").to_frame().style.format("{:.3f}"), width="stretch")
     st.markdown(
         f"- 점수 범위 {lo:.3f} ~ {hi:.3f}. 그룹 간 중앙값 차이가 작고 분포가 크게 겹친다. "
-        "text-embedding-3-small의 코사인 유사도는 같은 도메인(바이오·헬스케어) 안에서 0.4~0.7에 몰려, "
+        "같은 도메인(바이오·헬스케어) 안에서는 코사인 유사도가 좁은 범위에 몰려(모델마다 범위가 다름), "
         "단일 임계값으로는 '근거 없음'을 가려내기 어렵다.\n"
         "- 답변 불가 문항 다수는 주제가 지식베이스와 겹쳐(예: 범위 밖 연도, 의학적 조언) 유사도가 높게 나온다. "
         "그래서 임계값은 극단적으로 낮은 경우(관련 문서가 아예 없음)만 거르는 안전장치로 두고, "
@@ -375,7 +372,7 @@ def chart_kb() -> None:
 
 def chart_latency(items: pd.DataFrame, summ: pd.DataFrame) -> None:
     st.subheader("5. 응답시간 분포 — 재정렬 적용 전후")
-    default = [n for n in ["① 기준선 dense", "hybrid", "hybrid_time ★기본", "hybrid_rerank 1회", "hybrid_rerank 2회"]
+    default = [n for n in ["① 기준선 dense", "hybrid", "hybrid_time (3-small)", "hybrid_rerank 1회", CURRENT]
                if n in set(items["실험"])]
     picked = st.multiselect("설정", [n for n in EXP_NAMES if n in set(items["실험"])], default=default,
                             key="dash_lat_exps")
@@ -414,8 +411,8 @@ def render() -> None:
     st.caption(f"평가셋 79문항(답변 가능 68 · 답변 불가 11) · 생성 gpt-5.4-mini · 채점 gpt-5.4 · "
                f"실험 {len(summ)}개 · 근거: docs/evaluation.md. 사이드바 검색 조건은 이 탭에 적용되지 않는다.")
     k = summ.set_index("실험")
-    if {BASELINE, "hybrid_time ★기본"} <= set(k.index):
-        b, c = k.loc[BASELINE], k.loc["hybrid_time ★기본"]
+    if {BASELINE, CURRENT} <= set(k.index):
+        b, c = k.loc[BASELINE], k.loc[CURRENT]
         cols = st.columns(5)
         for col, m in zip(cols, ["Hit@1", "Hit@3", "MRR", "정확도", "과잉 거절"]):
             col.metric(f"{m} (현재 기본)", f"{c[m]:.3f}", f"{(c[m] - b[m]) * 100:+.1f}%p vs 기준선",

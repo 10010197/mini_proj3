@@ -1,7 +1,7 @@
 """④ 챗봇 계층 — 검색: Chroma(store/chroma, 읽기 전용) 조회 + 문서 단위 정리 + 원문 조회.
 
 - 인덱서가 만든 컬렉션을 **읽기만** 한다. 문서 임베딩·인덱스 쓰기·크롤링은 하지 않는다.
-  질의 임베딩만 인덱서와 같은 모델(text-embedding-3-small)로 만든다.
+  질의 임베딩만 인덱서와 같은 모델(text-embedding-3-large, 2026-11-10 3-small에서 교체)로 만든다.
 - 청크를 넉넉히(POOL) 가져와 문서당 최대 MAX_CHUNKS_PER_DOC개만 남기고 상위 K_DOCS개 문서로 자른다.
   (같은 문서의 청크가 상위를 독차지하는 문제: docs/indexing.md §5.2)
 - 원문 전체는 벡터 DB에 없다. 사용자가 원문을 요청하면 get_document(doc_id)로 store/docs.db를 조회한다.
@@ -28,7 +28,7 @@ CHROMA_DIR = PROJECT_ROOT / "store" / "chroma"
 DOCS_DB = PROJECT_ROOT / "store" / "docs.db"
 ENV = {**dotenv_values(PROJECT_ROOT / ".env"), **{k: v for k, v in os.environ.items() if k in ("EMBED_MODEL", "CHUNK_CONFIG")}}
 
-EMBED_MODEL = ENV.get("EMBED_MODEL") or "text-embedding-3-small"
+EMBED_MODEL = ENV.get("EMBED_MODEL") or "text-embedding-3-large"   # 근거: report/report.md §4.3 (2026-11-10 교체)
 CHUNK_CONFIG = ENV.get("CHUNK_CONFIG") or "structure"
 COLLECTION = f"{CHUNK_CONFIG}__{EMBED_MODEL}"
 

@@ -223,6 +223,8 @@ def main(argv: list[str] | None = None) -> None:
                     help="검색할 컬렉션의 청킹 설정 (기본: 챗봇과 같은 structure). 먼저 `python -m indexer load --configs ...`")
     ap.add_argument("--retrieval", choices=retriever.MODES, default=None,
                     help="검색 방식 (기본: RETRIEVAL_MODE). dense · hybrid(+BM25) · hybrid_time(+질문 연도) · hybrid_rerank(+LLM 재정렬)")
+    ap.add_argument("--embed-model", default=None,
+                    help="질의·컬렉션 임베딩 모델 (기본: EMBED_MODEL). 먼저 `python -m indexer load --model ...`로 컬렉션 적재")
     ap.add_argument("--tag", help="결과 파일 이름 (기본: {청킹 설정}__{검색 방식}__{생성 모델}, 부분 실행이면 _partial)")
     args = ap.parse_args(argv)
     for stream in (sys.stdout, sys.stderr):
@@ -238,8 +240,8 @@ def main(argv: list[str] | None = None) -> None:
         items = items[:args.limit]
     partial = len(items) < len(load_eval())
 
-    if args.chunk_config or args.retrieval:
-        retriever.configure(chunk_config=args.chunk_config, mode=args.retrieval)
+    if args.chunk_config or args.retrieval or args.embed_model:
+        retriever.configure(chunk_config=args.chunk_config, embed_model=args.embed_model, mode=args.retrieval)
     alias_path = ROOT / "store" / "chunks" / f"{retriever.CHUNK_CONFIG}_doc_alias.json"
     alias = json.loads(alias_path.read_text(encoding="utf-8")) if alias_path.exists() else {}
     siblings, corrections = event_siblings(), correction_aliases()

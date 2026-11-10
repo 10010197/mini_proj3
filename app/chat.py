@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from rag import chain, retriever
+from rag import chain, reliability, retriever
 from rag.prompts import ROLE_LABEL, SOURCE_LABEL
 
 HISTORY_TURNS = 3          # 체인에 넘기는 직전 대화 (질문·답변 쌍)
@@ -59,6 +59,49 @@ def _sources(msg: dict, key: str) -> None:
         st.caption(msg["meta"])
 
 
+def _reliability(msg: dict) -> None:
+    """답변별 신뢰성 판단 근거 — 원자료 수치 + 평가로 검증된 주의 표시 + 시스템 평가 성적 (rag/reliability.py)."""
+    m = msg.get("reliability")
+    if not m or msg.get("refused"):
+        return
+    ref = reliability.reference()
+    with st.container(border=True):
+        st.markdown("**신뢰성 판단 근거**")
+        fl = msg.get("flags") or []
+        for f in fl:
+            st.warning(f"**{f['label']}** — {f['why']}  \n{f['evidence']}", icon="⚠️")
+        v = (ref.get("validation") or {}).get("no_flag")
+        if not fl and v:
+            hum = f" · 사람 채점 {v['human']} (n={v['human_n']})" if v.get("human_n") else ""
+            st.success(f"주의 표시 없음 — 평가에서 주의 표시가 없던 답변 {v['n']}건의 정확도 LLM {v['llm']}{hum}", icon="✅")
+        c = st.columns(2) + st.columns(2)          # 2×2: 좁은 화면에서도 값이 잘리지 않게
+        c[0].metric("인용 근거 (건)", f"{m['n_cited']}/{m['n_sources']}", help="답변이 [n]으로 인용한 문서 / 검색으로 받은 문서")
+        c[1].metric("1차 자료 비율", "—" if m["primary_share"] is None else f"{m['primary_share']:.0%}",
+                    help="인용 문서 중 공시·정부 보도자료(1차 자료)의 비율. 나머지는 뉴스(2차 보도)·보고서(전망)·특허(선행 지표)")
+        pc = reliability.percentile(m["sim_max"], ref)
+        c[2].metric("최고 유사도", "—" if m["sim_max"] is None else f"{m['sim_max']:.3f}",
+                    help="인용 문서 중 질문과의 코사인 유사도 최고값. 백분위는 평가에서 정답 근거를 찾은 문항들의 최고 유사도 분포 기준")
+        c[3].metric("최신 근거", (m["date_max"] or "—")[:7], help=f"인용 근거 중 가장 최근 발행일: {m['date_max'] or '—'}")
+        mix = " · ".join(f"{SOURCE_LABEL.get(k, k)} {n}" for k, n in sorted(m["source_mix"].items(), key=lambda x: -x[1]))
+        parts = [f"출처 구성 {mix}", f"서로 다른 발행처 {m['publishers']}곳"]
+        if pc is not None:
+            parts.append(f"최고 유사도는 평가에서 정답 근거를 찾은 문항 분포의 {pc}백분위")
+        if m["date_min"] and m["date_min"] != m["date_max"]:
+            parts.append(f"근거 기간 {m['date_min']} ~ {m['date_max']}")
+        if m["citation_coverage"] is not None:
+            parts.append(f"인용이 붙은 사실 문장 {m['cited_sentences']}/{m['n_sentences']}")
+        if m["in_year_share"] is not None:
+            parts.append(f"질문 연도({', '.join(map(str, m['query_years']))}) 근거 {m['in_year_share']:.0%}")
+        st.caption(" · ".join(parts))
+        if ref:
+            prev = " · 임베딩 교체 전 설정" if ref.get("human_tag") and ref["human_tag"] != ref["tag"] else ""
+            hum = (f"사람 채점 표본 {ref['human_accuracy']} (n={ref['human_n']}{prev}) / "
+                   if ref.get("human_accuracy") else "")
+            st.caption(f"이 챗봇의 평가 성적 (79문항, 현재 설정): 정답 근거 3위 안 Hit@3 {ref['hit3']} · "
+                       f"근거 충실도 {ref['grounded']} · 정확도 {hum}LLM 채점 {ref['llm_accuracy']} · "
+                       f"근거 없는 질문 거절 {ref['refusal_accuracy']}")
+
+
 def _show(msg: dict, key: str) -> None:
     with st.chat_message(msg["role"]):
         if msg.get("empty"):
@@ -67,6 +110,7 @@ def _show(msg: dict, key: str) -> None:
         if msg.get("refused"):
             st.caption("근거 부족·범위 밖으로 답변을 보류했습니다.")
         st.markdown(_md(msg["content"]))
+        _reliability(msg)
         _sources(msg, key)
 
 
@@ -147,9 +191,11 @@ def _answer(question: str, filters: dict) -> None:
         msgs.append({"role": "assistant", "content": _empty_notice(filters), "empty": True})
         st.rerun()
     tokens = res["usage"].get("total_tokens", 0)
+    rel = reliability.assess(res["search_query"], res["answer"], res["sources"], res["cited"])
     msgs.append({
         "role": "assistant", "content": res["answer"], "refused": res["refused"],
         "sources": res["sources"], "cited": res["cited"],
+        "reliability": rel, "flags": reliability.flags(rel, reliability.reference()),
         "meta": (f"검색 질의: {res['search_query']}  \n" if res["search_query"] != question else "")
                 + f"{res['model']} · {retriever.COLLECTION} · {res['latency_s']}초 · 토큰 {tokens:,}",
     })

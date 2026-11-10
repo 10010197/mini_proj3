@@ -1,6 +1,6 @@
 """② 인덱싱 계층 — 임베딩 생성 (OpenAI Embeddings API) + 캐시.
 
-모델 결정: text-embedding-3-small (1536차원)  — 근거는 docs/indexing.md §1
+모델 결정: text-embedding-3-large (3072차원)  — 근거는 report/report.md §4.3 (처음 결정 3-small은 docs/indexing.md §1)
   - 한국어를 포함한 다국어 검색 성능이 검증된 범용 모델, 로컬 GPU 없이 사용 가능
   - 비용 $0.02 / 100만 토큰: 지식베이스 전체(청크 약 4만 개)를 청킹 설정마다 다시 임베딩해도 1회 약 $0.5
   - 3-large(3072차원)는 6.5배 비용 → 같은 청킹에서 Hit@3 차이를 측정해 판단 (eval/retrieval_eval.py --model)
@@ -23,7 +23,7 @@ from collector import storage
 
 log = logging.getLogger("indexer.embed")
 
-DEFAULT_MODEL = "text-embedding-3-small"
+DEFAULT_MODEL = "text-embedding-3-large"   # 2026-11-10 교체 (3-small 대비 hybrid_time Hit@3 0.662 → 0.809)
 EMB_DIR = storage.PROJECT_ROOT / "store" / "embeddings"
 BATCH = 128
 TOKENS_PER_MIN = 900_000          # 계정 한도 1M TPM보다 약간 낮게
