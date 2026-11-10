@@ -1,0 +1,51 @@
+{
+ "tag": "structure__hybrid_time__gpt-5.4-mini_prompt2",
+ "n_scored": 30,
+ "n_sheet": 30,
+ "manual_accuracy": 0.783,
+ "llm_accuracy_same_items": 0.583,
+ "exact_agreement": 0.533,
+ "within_half_point": 1.0,
+ "cohen_kappa": 0.308,
+ "manual_higher": 13,
+ "manual_lower": 1,
+ "by_type": {
+  "comparison": {
+   "n": 5,
+   "manual": 0.9,
+   "llm": 0.5
+  },
+  "fact": {
+   "n": 14,
+   "manual": 0.893,
+   "llm": 0.679
+  },
+  "synthesis": {
+   "n": 5,
+   "manual": 0.5,
+   "llm": 0.5
+  },
+  "temporal": {
+   "n": 6,
+   "manual": 0.667,
+   "llm": 0.5
+  }
+ },
+ "confusion_manual_to_llm": {
+  "0.0": {
+   "0.0": 2,
+   "0.5": 1,
+   "1.0": 0
+  },
+  "0.5": {
+   "0.0": 0,
+   "0.5": 7,
+   "1.0": 0
+  },
+  "1.0": {
+   "0.0": 0,
+   "0.5": 13,
+   "1.0": 7
+  }
+ }
+}

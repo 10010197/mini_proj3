@@ -1,0 +1,15 @@
+pandas>=2.2
+matplotlib>=3.8
+ipykernel
+requests>=2.31
+beautifulsoup4>=4.12
+lxml>=5.0
+python-dotenv>=1.0
+openai>=1.0
+numpy
+chromadb>=0.5,<2
+langchain-core>=1.0
+langchain-openai>=1.0
+langchain-chroma>=1.0
+pydantic>=2
+streamlit>=1.40

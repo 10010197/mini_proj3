@@ -1,0 +1,96 @@
+{
+  "static": {
+    "collector": {
+      "rule": "수집기: 차트·UI 코드 금지",
+      "files": 11,
+      "project_imports": [
+        "collector"
+      ],
+      "violations": []
+    },
+    "indexer": {
+      "rule": "인덱서: UI 코드 금지",
+      "files": 7,
+      "project_imports": [
+        "collector",
+        "indexer",
+        "rag"
+      ],
+      "violations": []
+    },
+    "rag": {
+      "rule": "챗봇 체인: 수집기·인덱서 의존·크롤링·UI·인덱스 쓰기 금지",
+      "files": 6,
+      "project_imports": [
+        "rag"
+      ],
+      "violations": []
+    },
+    "app": {
+      "rule": "챗봇 UI: 수집기·인덱서 의존·크롤링·인덱스 쓰기 금지",
+      "files": 4,
+      "project_imports": [
+        "app",
+        "rag"
+      ],
+      "violations": []
+    }
+  },
+  "runtime": {
+    "tabs": [
+      "검색",
+      "대화",
+      "성능 분석"
+    ],
+    "startup_exceptions": [],
+    "startup_errors": [],
+    "search_exceptions": [],
+    "search_shows_results": true,
+    "search_errors": [],
+    "chat_inputs_after_search": 1,
+    "chat_exceptions": [],
+    "chat_messages": 2,
+    "chat_answer_head": "종근당이 2023년 2월 도입한 ADC 플랫폼 기술의 계약 상대방은 **Synaffix B.V(네덜란드)**입니다. 공시[1]에 따르면 2023-02-03에 체결된 비독점적 실시권 도입 계약의 상대방으로 명시되어 있고, 정정공시[2]와 이후 사업보고서[4][5]에서도 동일하게 확인됩니다",
+    "dashboard_rendered": true,
+    "store_changed": [],
+    "store_new": [],
+    "chroma_internal_changes": {
+      "acquire_write": [
+        86,
+        87
+      ]
+    },
+    "chroma_mtime_changed": true,
+    "chroma_rows": {
+      "embeddings": 219961,
+      "collections": 4,
+      "segments": 8
+    },
+    "blocked_imports": [],
+    "writes": [],
+    "chroma_opened": [
+      "structure__text-embedding-3-large"
+    ],
+    "query_embeddings": [
+      "리가켐바이오 기술이전 계약 상대방",
+      "리가켐바이오 기술이전 계약 상대방",
+      "리가켐바이오 기술이전 계약 상대방",
+      "종근당이 2023년 2월 도입한 ADC 플랫폼 기술의 계약 상대방은?",
+      "리가켐바이오 기술이전 계약 상대방",
+      "리가켐바이오 기술이전 계약 상대방",
+      "리가켐바이오 기술이전 계약 상대방",
+      "리가켐바이오 기술이전 계약 상대방"
+    ],
+    "checks": {
+      "탭 3개 구동": true,
+      "검색 탭 결과 표시": true,
+      "대화 탭 답변 생성": true,
+      "성능 분석 탭 렌더링": true,
+      "collector·indexer import 시도 0건": true,
+      "저장소 쓰기 시도 0건": true,
+      "docs.db 변경 없음": true,
+      "Chroma·BM25·청크 파일 변경 없음": true
+    }
+  },
+  "passed": true
+}

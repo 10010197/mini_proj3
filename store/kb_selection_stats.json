@@ -1,0 +1,51 @@
+{
+  "total_docs": 43285,
+  "kb_docs": 15379,
+  "kb_by_source": {
+    "news": 8001,
+    "patent": 4109,
+    "disclosure": 1516,
+    "policy": 1022,
+    "report": 731
+  },
+  "kb_by_reason": {
+    "news:topic": 6825,
+    "patent:AI 신약개발": 1477,
+    "dart:filing": 1440,
+    "patent:ADC": 1246,
+    "other:all": 1022,
+    "news:outlook": 957,
+    "patent:의료 AI 규제": 600,
+    "report:brief": 500,
+    "patent:비대면 진료": 350,
+    "patent:foreign": 242,
+    "news:keyword": 219,
+    "patent:seed_applicant": 190,
+    "report:report": 154,
+    "dart:annual_recent": 76,
+    "report:watch": 50,
+    "report:global": 27,
+    "patent:other_topic": 4
+  },
+  "primary_share_docs": 0.48,
+  "est_chunks": 43011,
+  "est_chunks_by_source": {
+    "disclosure": 9892,
+    "news": 20193,
+    "patent": 4196,
+    "policy": 5111,
+    "report": 3619
+  },
+  "primary_share_chunks": 0.531,
+  "kb_topics": {
+    "바이오 투자": 2913,
+    "CDMO": 2375,
+    "비대면 진료": 2345,
+    "ADC": 2114,
+    "AI 신약개발": 2010,
+    "의료 AI 규제": 1530,
+    "바이오시밀러": 1163,
+    "신약 기술수출": 663
+  },
+  "generated_at": "2026-11-04T14:43:49"
+}

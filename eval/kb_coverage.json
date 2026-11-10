@@ -1,0 +1,334 @@
+[
+  {
+    "id": "Q01",
+    "type": "동향 요약",
+    "needs": [
+      "news",
+      "disclosure"
+    ],
+    "kb": {
+      "news": 198,
+      "disclosure": 61,
+      "report": 13,
+      "policy": 8
+    },
+    "all": {
+      "news": 238,
+      "disclosure": 62,
+      "report": 13,
+      "policy": 8
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q02",
+    "type": "동향 요약",
+    "needs": [
+      "news",
+      "policy",
+      "report"
+    ],
+    "kb": {
+      "news": 89,
+      "policy": 15,
+      "report": 12,
+      "disclosure": 2
+    },
+    "all": {
+      "news": 113,
+      "policy": 15,
+      "report": 12,
+      "disclosure": 2
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q03",
+    "type": "동향 요약",
+    "needs": [
+      "news"
+    ],
+    "kb": {
+      "news": 103,
+      "report": 2,
+      "policy": 1
+    },
+    "all": {
+      "news": 125,
+      "report": 2,
+      "policy": 1
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q04",
+    "type": "뉴스 vs 특허",
+    "needs": [
+      "news",
+      "patent",
+      "disclosure"
+    ],
+    "kb": {
+      "patent": 395,
+      "news": 297,
+      "disclosure": 70,
+      "report": 32,
+      "policy": 15
+    },
+    "all": {
+      "patent": 397,
+      "news": 389,
+      "disclosure": 70,
+      "report": 32,
+      "policy": 15
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q05",
+    "type": "뉴스 vs 특허",
+    "needs": [
+      "news",
+      "patent"
+    ],
+    "kb": {
+      "news": 249,
+      "report": 67,
+      "policy": 63,
+      "patent": 54,
+      "disclosure": 48
+    },
+    "all": {
+      "news": 399,
+      "disclosure": 113,
+      "report": 77,
+      "policy": 63,
+      "patent": 54
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q06",
+    "type": "뉴스 vs 특허",
+    "needs": [
+      "patent",
+      "news"
+    ],
+    "kb": {
+      "news": 1124,
+      "report": 237,
+      "policy": 186,
+      "patent": 183,
+      "disclosure": 120
+    },
+    "all": {
+      "news": 3748,
+      "patent": 635,
+      "report": 326,
+      "disclosure": 218,
+      "policy": 186
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q07",
+    "type": "뉴스 vs 보고서",
+    "needs": [
+      "news",
+      "report"
+    ],
+    "kb": {
+      "news": 222,
+      "report": 41,
+      "disclosure": 25,
+      "policy": 10
+    },
+    "all": {
+      "news": 325,
+      "disclosure": 59,
+      "report": 41,
+      "policy": 10
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q08",
+    "type": "뉴스 vs 보고서",
+    "needs": [
+      "news",
+      "report"
+    ],
+    "kb": {
+      "news": 424,
+      "report": 43,
+      "policy": 19,
+      "disclosure": 13
+    },
+    "all": {
+      "news": 941,
+      "report": 61,
+      "disclosure": 34,
+      "policy": 19
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q09",
+    "type": "뉴스 vs 보고서",
+    "needs": [
+      "news",
+      "report"
+    ],
+    "kb": {
+      "news": 449,
+      "report": 74,
+      "disclosure": 41,
+      "policy": 19,
+      "patent": 6
+    },
+    "all": {
+      "news": 595,
+      "report": 77,
+      "disclosure": 69,
+      "policy": 19,
+      "patent": 6
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q10",
+    "type": "기업·딜",
+    "needs": [
+      "disclosure",
+      "news"
+    ],
+    "kb": {
+      "news": 59,
+      "disclosure": 42,
+      "report": 6,
+      "policy": 2
+    },
+    "all": {
+      "news": 74,
+      "disclosure": 51,
+      "report": 6,
+      "policy": 2
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q11",
+    "type": "기업·딜",
+    "needs": [
+      "disclosure",
+      "news"
+    ],
+    "kb": {
+      "news": 74,
+      "disclosure": 26,
+      "policy": 6,
+      "report": 5
+    },
+    "all": {
+      "news": 98,
+      "disclosure": 29,
+      "policy": 6,
+      "report": 5
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q12",
+    "type": "기업·딜",
+    "needs": [
+      "news",
+      "disclosure"
+    ],
+    "kb": {
+      "news": 547,
+      "disclosure": 192,
+      "report": 32,
+      "policy": 26
+    },
+    "all": {
+      "news": 851,
+      "disclosure": 218,
+      "report": 33,
+      "policy": 26
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q13",
+    "type": "규제 영향",
+    "needs": [
+      "policy",
+      "news",
+      "report"
+    ],
+    "kb": {
+      "news": 333,
+      "policy": 168,
+      "disclosure": 64,
+      "report": 13
+    },
+    "all": {
+      "news": 719,
+      "policy": 168,
+      "disclosure": 148,
+      "report": 19
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q14",
+    "type": "규제 영향",
+    "needs": [
+      "news",
+      "disclosure",
+      "report"
+    ],
+    "kb": {
+      "disclosure": 140,
+      "news": 124,
+      "report": 24,
+      "policy": 3
+    },
+    "all": {
+      "disclosure": 162,
+      "news": 158,
+      "report": 30,
+      "policy": 3
+    },
+    "lacking": [],
+    "verdict": "OK"
+  },
+  {
+    "id": "Q15",
+    "verdict": "N/A",
+    "note": "refuse"
+  },
+  {
+    "id": "Q16",
+    "verdict": "N/A",
+    "note": "no_data"
+  },
+  {
+    "id": "Q17",
+    "verdict": "N/A",
+    "note": "out_of_scope"
+  }
+]

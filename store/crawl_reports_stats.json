@@ -1,0 +1,32 @@
+{
+  "boards": {
+    "watch": {
+      "listed": 59,
+      "relevant": 50,
+      "saved": 50,
+      "short": 0
+    },
+    "report": {
+      "listed": 179,
+      "relevant": 154,
+      "saved": 154,
+      "short": 0
+    },
+    "global": {
+      "listed": 34,
+      "relevant": 27,
+      "saved": 27,
+      "short": 0
+    },
+    "industry": {
+      "listed": 1575,
+      "relevant": 1163,
+      "saved": 1099,
+      "short": 57
+    }
+  },
+  "saved": 1330,
+  "requests": 1421,
+  "cache_hits": 12,
+  "generated_at": "2026-11-04T11:47:26"
+}

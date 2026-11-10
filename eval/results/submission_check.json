@@ -1,0 +1,218 @@
+{
+ "checked_at": "2026-11-10T13:19:01",
+ "summary": {
+  "PASS": 30
+ },
+ "checks": [
+  {
+   "section": "구조",
+   "item": "collector/ · indexer/ · store/ · rag/ · app/ 분리",
+   "status": "PASS",
+   "evidence": "디렉터리 5/5 · 계층 규칙 위반 0건 · rag 의존 ['rag'] · app 의존 ['app', 'rag']",
+   "source": "eval/check_layers.py (정적)"
+  },
+  {
+   "section": "구조",
+   "item": "챗봇 코드에 임베딩 생성·크롤링 코드 없음",
+   "status": "PASS",
+   "evidence": "rag+app 정적 위반 0건(크롤링 라이브러리·embed_documents·인덱스 쓰기 호출) · 실제 앱 구동 중 문서 임베딩·인덱스 쓰기 시도 0건 · 질의 임베딩만 8회",
+   "source": "eval/check_layers.py, eval/results/layer_check.json"
+  },
+  {
+   "section": "구조",
+   "item": "벡터 DB 디스크 영속화",
+   "status": "PASS",
+   "evidence": "store/chroma 4.45GB · 디스크에서 다시 열어 센 컬렉션 4개 · 기본 컬렉션 청크 57,433 (적재 파일 57,433과 일치)",
+   "source": "chromadb.PersistentClient(store/chroma)"
+  },
+  {
+   "section": "구조",
+   "item": "인덱서 제외 상태에서 챗봇 구동",
+   "status": "PASS",
+   "evidence": "collector·indexer import 차단 상태로 app/main.py 구동: 탭 3개 · import 시도 0건 · 검색 결과 표시 True · 대화 답변 생성 True",
+   "source": "eval/results/layer_check.json (python -m eval.check_layers)"
+  },
+  {
+   "section": "구조",
+   "item": "평가 하네스와 챗봇이 같은 체인(rag/chain.py) 호출",
+   "status": "PASS",
+   "evidence": "하네스 → chain.ask · 챗봇 → chain.ask, chain.finalize, chain.retrieve, chain.stream_answer · ask()는 같은 단계 3/3(retrieve → generate → finalize)로 구성",
+   "source": "eval/run_eval.py:108, app/chat.py:127-138, rag/chain.py:119"
+  },
+  {
+   "section": "구조",
+   "item": ".env가 .gitignore에 등록 · 저장소·리포트에 키 없음",
+   "status": "PASS",
+   "evidence": ".env 무시됨 True · 추적 안 됨 True · .env의 키 7개를 추적 파일 74개에서 검색 → 0건 · 커밋 12개 전체 이력에서 0건 · report/ 파일 10개에서 0건 · 'sk-' 패턴 포함",
+   "source": "git check-ignore / git grep (키 값은 출력하지 않음)"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "벡터 DB 구성 전 EDA 수행·기술",
+   "status": "PASS",
+   "evidence": "notebooks/eda.ipynb 코드 셀 21개 중 실행 결과가 있는 셀 21개 · 요약 README §3(제공 CSV 65,025행 → 고유 32,452건 등)",
+   "source": "notebooks/eda.ipynb, README.md §3, docs/data_and_use_cases.md"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "부족 자료 탐색·보강 내역 기록",
+   "status": "PASS",
+   "evidence": "대표 질문 17개의 출처별 근거 수 점검: 충분 14 · 해당 없음(거절 문항) 3 · 부족 0 · 보강: 정부 보도자료 1,022건 · 공시 1,627건 · 특허 8,114건 · 보고서 1,330건 직접 수집",
+   "source": "eval/kb_coverage.json, docs/kb_composition.md §2"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "직접 수집한 1차 자료가 지식베이스에 포함",
+   "status": "PASS",
+   "evidence": "지식베이스 15,379건 중 직접 수집 7,378/15,379 (48.0%) · 1차 자료(공시 1,516 + 정부 보도자료 1,022) 2,538/15,379 (16.5%) · 출처별 provided 8,001, kipris 4,109, dart 1,516, korea_kr 1,022, bioin 731",
+   "source": "store/docs.db documents.in_kb, origin"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "직접 수집 소스의 선정 근거·접근 제약 대응 기술",
+   "status": "PASS",
+   "evidence": "README §8 소스별 표(수집 방식·robots/약관·요청 간격) · 보관한 robots.txt 10개 · 대체 경로 기술 2건(보건산업진흥원 PDF → BioIN 재게시, mohw → 정책브리핑)",
+   "source": "README.md §7·§8, data/compliance/, docs/kb_composition.md"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "모든 문서에 출처 URL·발행일·수집 일시 기록",
+   "status": "PASS",
+   "evidence": "지식베이스 15,379건: URL 15,379/15,379 (100.0%) · 발행일 15,379/15,379 (100.0%) · 수집 일시 15,379/15,379 (100.0%) / 전체 수집 43,285건: URL 43,285 · 발행일 43,285 · 수집 일시 43,285",
+   "source": "store/docs.db documents.url, published_at, loaded_at"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "중복 판별 기준 설정·처리 전후 건수 기록",
+   "status": "PASS",
+   "evidence": "원본 65,025행 → URL 병합 32,452 → 본문 완전 중복 −118 → 품질 선별 31,192 → 재배포본 −7,677(클러스터 3,106, 기준 5-gram Jaccard ≥ 0.5·3일) → 동일 사건 축약 −892 → 22,623건 (−27.5%)",
+   "source": "store/dedup_stats.json, docs/kb_composition.md §1"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "청크에 출처·발행일 등 필요한 정보 포함",
+   "status": "PASS",
+   "evidence": "청크 57,433개 전수: 머리말 2행에 발행일 57,433/57,433 (100.0%) · 발행처 57,433/57,433 (100.0%) · 메타데이터(doc_id·출처 종류·제목·발행일·URL) 모두 있음 57,433/57,433 (100.0%)",
+   "source": "store/chroma 기본 컬렉션 전수 조회"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "청크에 문서 제목 포함",
+   "status": "PASS",
+   "evidence": "청크 57,433개 전수: 머리말 1행에 문서 제목 57,433/57,433 (100.0%) · 제목 포함 효과: 제거 시 Hit@3 0.574 → 0.368(−20.6%p)",
+   "source": "store/chroma 전수 조회, docs/evaluation.md §5"
+  },
+  {
+   "section": "데이터 및 인덱싱",
+   "item": "인덱싱 후 문서 수·청크 수 검증",
+   "status": "PASS",
+   "evidence": "청크 파일 57,433 = DB 57,433 = 재오픈 57,433 · 누락 ID 0 · 빈 청크 0 · 벡터 불일치 0/200 · 문서 15,355 + 전 청크 중복으로 빠진 24 = 지식베이스 15,379",
+   "source": "store/vector_load_stats.json, docs/indexing.md"
+  },
+  {
+   "section": "평가",
+   "item": "평가셋 직접 작성",
+   "status": "PASS",
+   "evidence": "79문항 (사실 36 · 비교 9 · 시점 14 · 종합 9 · 답변 불가 11) · 정답 기준 79/79 (100.0%) · 정답 문서 ID 68/68 (100.0%) — 지식베이스 문서를 보고 작성",
+   "source": "eval/eval_set.jsonl, docs/indexing.md §7"
+  },
+  {
+   "section": "평가",
+   "item": "답변 불가 유형 문항 포함",
+   "status": "PASS",
+   "evidence": "답변 불가 11문항 (14%) — 범위 밖 연도·의학적 조언·투자 권유·미수집 영역",
+   "source": "eval/eval_set.jsonl"
+  },
+  {
+   "section": "평가",
+   "item": "Hit@k 또는 MRR 측정",
+   "status": "PASS",
+   "evidence": "실험 11개 모두 Hit@1·3·6·MRR 기록 · 현재 기본 Hit@1 0.632 · Hit@3 0.809 · Hit@6 0.853 · MRR 0.717 (답변 가능 68)",
+   "source": "eval/results/answer_eval_*.json"
+  },
+  {
+   "section": "평가",
+   "item": "답변 품질 직접 채점",
+   "status": "PASS",
+   "evidence": "블라인드 표본 30/30문항 사람 채점 · 사람 정확도 0.783 vs 같은 문항 LLM 0.583 · 완전 일치 53% · 0.5점 이내 100% · Cohen κ 0.308 · 사람이 더 높게 13 / 더 낮게 1",
+   "source": "eval/manual_review.py → eval/results/manual_review__structure__hybrid_time__gpt-5.4-mini_prompt2.csv, eval/results/manual_agreement__structure__hybrid_time__gpt-5.4-mini_prompt2.json"
+  },
+  {
+   "section": "평가",
+   "item": "개선 전후 수치 비교표 작성",
+   "status": "PASS",
+   "evidence": "실험 기록 13개(부모·바꾼 변수 하나·결정) · 기준선 → 현재 기본: Hit@1 0.353 → 0.632 · Hit@3 0.574 → 0.809 · MRR 0.462 → 0.717 · 정확도 0.581 → 0.662",
+   "source": "eval/experiments.json, docs/evaluation.md §5~§8, 성능 분석 탭"
+  },
+  {
+   "section": "평가",
+   "item": "실패 사례 확인·원인 계층별 분류",
+   "status": "PASS",
+   "evidence": "실패 46건 증거 기반 판정: 생성 32 · 검색 11 · 인덱싱 2 · 평가셋 1 (데이터·전처리 0)",
+   "source": "eval/diagnose_failures.py, docs/failure_analysis.md §2"
+  },
+  {
+   "section": "챗봇",
+   "item": "답변에 출처가 번호로 연결되어 표시",
+   "status": "PASS",
+   "evidence": "거절하지 않은 답변 70/70 (100.0%)이 [n] 인용 · 존재하지 않는 번호 인용 0건 · 출처 종류와 번호 함께 표기('공시[1]', '뉴스 보도[4]' 등) 62/70 · 실제 앱 대화 답변에 [n] 표시 True · 출처 목록 펼침 11개",
+   "source": "answer_eval_structure__3large__hybrid_time__gpt-5.4-mini_prompt2.json, 실제 앱 구동"
+  },
+  {
+   "section": "챗봇",
+   "item": "원문 확인 또는 링크 접근",
+   "status": "PASS",
+   "evidence": "평가에서 인용된 문서 159/159 (100.0%)에 원문 URL · 검색 탭 '원문 보기'와 대화 탭 '원문 전체 보기'로 docs.db 본문 표시(읽기 전용)",
+   "source": "app/search_ui.py:70, app/chat.py:33, store/docs.db"
+  },
+  {
+   "section": "챗봇",
+   "item": "근거가 없는 경우 답변 거절",
+   "status": "PASS",
+   "evidence": "답변 불가 문항 거절 9/11 (0.818) — 평가셋 오류 U10 제외 시 9/10 · 거절 문구 정확히 일치 9/9 · 과잉 거절 0.0 · 근거 충실도 0.934",
+   "source": "answer_eval_structure__3large__hybrid_time__gpt-5.4-mini_prompt2.json"
+  },
+  {
+   "section": "챗봇",
+   "item": "멀티턴 대화 유지",
+   "status": "PASS",
+   "evidence": "실제 앱에서 1턴 '종근당이 2023년 2월 도입한 ADC 플랫폼 기술의 계약 상대방은?' → 2턴 '그 계약의 총 규모는?': 2턴 답변에 'USD 132M' 포함 True · 대화 메시지 4개 유지 · 2턴 답변 앞부분: 공시[2]에 따르면, 종근당의 ADC 플랫폼 기술 도입 계약 총 규모는 **USD 132M**입니다. 계약금은 **USD 1M**, 마일스톤은 ",
+   "source": "app/chat.py(HISTORY_TURNS, chain.condense), 실제 앱 구동"
+  },
+  {
+   "section": "챗봇",
+   "item": "검색 결과가 없을 때 안내 메시지",
+   "status": "PASS",
+   "evidence": "문서 0건인 필터(보고서 · 2021년 · ADC, docs.db로 0건 확인)에서 검색 탭 안내 True · 대화 탭 안내 현재 검색 조건(기간·출처 종류·하위 주제)에 맞는 근거 문서가 없습니다.  \n왼쪽 사이드바에서 기간을 넓히거나 출처 종류·주제 필터를 해제한 뒤 다시 질문해 주세요. · 예외 0건",
+   "source": "app/search_ui.py:44, app/chat.py:131, 실제 앱 구동"
+  },
+  {
+   "section": "챗봇",
+   "item": "평가 결과 시각화 구현",
+   "status": "PASS",
+   "evidence": "성능 분석 탭 차트 5종(설정별 Hit@k·MRR · 유형별 정확도 · 유사도 분포 · 지식베이스 구성 · 응답시간) · 실험 11개 결과 파일 · 실제 앱 렌더링 True",
+   "source": "app/dashboard.py, docs/evaluation.md §9"
+  },
+  {
+   "section": "리포트",
+   "item": "청킹·임베딩 선택의 정량적 근거",
+   "status": "PASS",
+   "evidence": "청킹: 3개 설정 Hit@1·3·10·MRR·유형별 비교표(structure 0.588 · fixed 0.515 · notitle 0.382) True · 임베딩: 모델 2종 × 차원 9개 검색 비교 결과 True · 리포트 §4.3 반영 True",
+   "source": "report/report.md §4.2·§4.3, eval/results/embedding_comparison.json"
+  },
+  {
+   "section": "리포트",
+   "item": "실패 사례와 한계 기술",
+   "status": "PASS",
+   "evidence": "§8 실패 사례 분석에 문항 40개 언급(사람 기준 0점 F08·T04·T12 개별 분석 포함) · §9 한계 표·과제 12행 · 실패 계층 판정 52건 수치 포함",
+   "source": "report/report.md §8·§9"
+  },
+  {
+   "section": "리포트",
+   "item": "모든 설계 판단의 근거 설명",
+   "status": "PASS",
+   "evidence": "필수 10개 절 10/10 · 부록 B 설계 판단 16건 중 수치 근거 15건 · 그림 8개 중 누락 0",
+   "source": "report/report.md 부록 B"
+  }
+ ]
+}
